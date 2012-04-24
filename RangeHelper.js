@@ -46,8 +46,19 @@ $.extend(true, Narmand, {
                 if (CurrentNode.nodeType === 1 && CurrentNode.tagName.toLowerCase() === TagName) {
                     $(CurrentNode).contents().unwrap();
                 }
+            }
 
+            Range.commonAncestorContainer.normalize();
+        },
 
+        ClearFormattingInRange: function (Range) {
+            var NodeIterator = Range.createNodeIterator();
+            while (NodeIterator.hasNext()) {
+                var CurrentNode = NodeIterator.next();
+
+                if (CurrentNode.nodeType === 3 && CurrentNode.parentNode.tagName.toLowerCase() != "p") {
+                    $(CurrentNode).unwrap();
+                }
             }
 
             Range.commonAncestorContainer.normalize();

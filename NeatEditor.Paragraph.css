@@ -1,7 +1,23 @@
-﻿.NarmandNeatEditor .Toolbar .MakeStrong{
+﻿.NarmandNeatEditor .Toolbar .MakeStrong {
     background: url(Images/Paragraph.MakeStrong.png) no-repeat center center;
 }
 
-.NarmandNeatEditor .Toolbar .Emphasize{
+.NarmandNeatEditor .Toolbar .Emphasize {
     background: url(Images/Paragraph.Emphasize.png) no-repeat center center;
+}
+
+.NarmandNeatEditor .Toolbar .Strikethrough {
+    background: url(Images/Paragraph.Strikethrough.png) no-repeat center center;
+}
+
+.NarmandNeatEditor .Toolbar .ClearFormatting {
+    background: url(Images/Paragraph.ClearFormatting.png) no-repeat center center;
+}
+
+.NarmandNeatEditor .Toolbar .ChanegeDirectionToLeftToRight {
+    background: url(Images/Paragraph.ChanegeDirectionToLeftToRight.png) no-repeat center center;
+}
+
+.NarmandNeatEditor .Toolbar .ChanegeDirectionToRightToLeft {
+    background: url(Images/Paragraph.ChanegeDirectionToRightToLeft.png) no-repeat center center;
 }

@@ -224,7 +224,58 @@ Narmand.NeatEditor.Extend({
             Emphasize: {
                 Title: "Emphasize on selection",
                 Act: function () {
-                    document.execCommand('italic', false, null);
+                    var Selection = rangy.getSelection();
+                    var Range = Selection.getAllRanges()[0];
+                    Narmand.RangeHelper.ToggleRangeSurroundingByTag(Range, "em");
+                    Selection.removeAllRanges();
+                }
+            },
+            Strikethrough: {
+                Title: "Strike selection out",
+                Act: function () {
+                    var Selection = rangy.getSelection();
+                    var Range = Selection.getAllRanges()[0];
+                    Narmand.RangeHelper.ToggleRangeSurroundingByTag(Range, "del");
+                    Selection.removeAllRanges();
+                }
+            },
+            ClearFormatting: {
+                Title: "Clear selection formatting",
+                Act: function () {
+                    var Selection = rangy.getSelection();
+                    var Range = Selection.getAllRanges()[0];
+                    Narmand.RangeHelper.ClearFormattingInRange(Range);
+                    Selection.removeAllRanges();
+                }
+            },
+            ChanegeDirectionToLeftToRight: {
+                Title: "Change paragraph direction left to right",
+                Act: function () {
+                    var Selection = rangy.getSelection();
+                    var Range = Selection.getAllRanges()[0];
+                    console.info(Range);
+                    var ParentElement = $(Range.startContainer.parentElement);
+                    if (ParentElement.is("p")) {
+                        ParentElement.css("direction", "ltr");
+                    }
+                    else {
+                        ParentElement.closest("p").css("direction", "rtl");
+                    }
+                }
+            },
+            ChanegeDirectionToRightToLeft: {
+                Title: "Change paragraph direction right to left",
+                Act: function () {
+                    var Selection = rangy.getSelection();
+                    var Range = Selection.getAllRanges()[0];
+                    console.info(Range);
+                    var ParentElement = $(Range.startContainer.parentElement);
+                    if (ParentElement.is("p")) {
+                        ParentElement.css("direction", "rtl");
+                    }
+                    else {
+                        ParentElement.closest("p").css("direction", "rtl");
+                    }
                 }
             }
         }

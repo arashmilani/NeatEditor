@@ -38,6 +38,10 @@
     background-color: #fff;
 }
 
+.NarmandNeatEditor .Sections .Section *{
+    outline:none;
+}
+
 .NarmandNeatEditor .Sections .Section .ToolsWrapper {
     width: 40px;
     position: absolute;
