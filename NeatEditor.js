@@ -71,19 +71,30 @@ var Narmand = {
                 }
 
                 for (var ProviderToolName in Provider.Tools) {
-                    $("<div>").addClass("Tool")
+                    $("<a>").addClass("Tool")
                         .addClass(ProviderToolName)
                         .data("ToolName", ProviderToolName)
                         .data("SectionProvider", Provider)
                         .attr("title", Provider.Tools[ProviderToolName].Title)
+                        .attr("href", "")
                         .click(function () {
-                            Narmand.NeatEditor.Toolbar.ToolSelected($(this));
+                            try {
+                                Narmand.NeatEditor.Toolbar.ToolSelected($(this));
+                            } catch (e) { alert(e); }
+                            return false;
                         })
                         .appendTo(EditorToolbar);
                 }
             },
 
             PositionToolbarAccordingToSection: function (ToolbarElement, SectionElement) {
+                if (ToolbarElement.children().length === 0) {
+                    ToolbarElement.hide();
+                }
+                else {
+                    ToolbarElement.show();
+                }
+
                 var CalculatedTop = SectionElement.offset().top - 20 -
                     SectionElement.closest(".NarmandNeatEditor").offset().top;
 
@@ -199,13 +210,47 @@ Narmand.NeatEditor.Extend({
             MakeStrong: {
                 Title: "Make selection strong",
                 Act: function () {
-                    alert("MakeStrong");
+                    //document.execCommand('removeFormat', false, null);
+                    var Selection = rangy.getSelection();
+                    Range = Selection.getAllRanges()[0];
+
+                    if ($(Range.commonAncestorContainer.parentNode).css("font-weight") > 400 ||
+                        $(Range.commonAncestorContainer.parentNode).css("font-weight") === "bold") {
+                        return;
+                    }
+                    else {
+                        var Strong = document.createElement("strong");
+                        if (Range.canSurroundContents()) {
+                            Range.surroundContents(Strong);
+                            return;
+                        }
+                    }
+
+                    if ($(Range.endContainer.parentNode).css("font-weight") > 400 ||
+                            $(Range.endContainer.parentNode).css("font-weight") === "bold") {
+                        var SelectedTextInStartContainer = Range.startContainer.data.substr(Range.startOffset);
+                        Range.startContainer.data = Range.startContainer.data.substr(0, Range.startOffset);
+                        $(Range.endContainer.parentNode).text(SelectedTextInStartContainer +
+                                $(Range.endContainer.parentNode).text());
+                    }
+
+                    if ($(Range.startContainer.parentNode).css("font-weight") > 400 ||
+                            $(Range.startContainer.parentNode).css("font-weight") === "bold") {
+                        var SelectedTextInEndContainer = Range.endContainer.data.substr(0, Range.endOffset);
+                        Range.endContainer.data = Range.endContainer.data.substr(Range.endOffset);
+                        $(Range.startContainer.parentNode).text($(Range.startContainer.parentNode).text() +
+                                SelectedTextInEndContainer);
+                    }
+
+
+
+
                 }
             },
             Emphasize: {
                 Title: "Emphasize on selection",
                 Act: function () {
-                    alert("MakeEmphasize");
+                    document.execCommand('italic', false, null);
                 }
             }
         }
@@ -223,3 +268,34 @@ $.fn.extend({
         });
     }
 });
+
+
+function MakeBold() {
+    var Selection = rangy.getSelection();
+    Range = Selection.getAllRanges()[0];
+
+
+    var Strong = document.createElement("strong");
+    $(Range.startContainer).wrap("<strong>");
+    $(Range.endContainer).wrap("<strong>");
+
+
+    return;
+
+    Selection.removeAllRanges();
+    Range.deleteContents();
+
+    var container = Range.startContainer;
+    var pos = Range.startOffset;
+    var NewContent = "<b>hello</b>";
+
+
+    // make a new range for the new selection
+    Range = rangy.createRange();
+    container.insertData(pos, NewContent);
+
+    Range.setEnd(container, pos + NewContent.length);
+    Range.setStart(container, pos);
+
+    Selection.addRange(Range);
+};
