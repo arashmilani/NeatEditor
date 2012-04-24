@@ -167,23 +167,7 @@ Narmand.NeatEditor.Extend({
                         .appendTo(HtmlCodeSection.find(".Content"));
             HtmlCodeSection.appendTo(SectionsWrapper);
         },
-        TagName: null,
-
-        Tools: {
-            MakeStrong: {
-                Title: "Make selection strong",
-                Act: function () {
-                    alert("MakeStrong");
-                }
-            }
-        },
-
-        EncodeHtml: function (HtmlCode) {
-            return HtmlCode.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        },
-        DecodeHtml: function (EncodedHtml) {
-            return EncodedHtml.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
-        }
+        TagName: null
     }
 });
 
