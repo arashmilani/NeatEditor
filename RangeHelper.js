@@ -21,7 +21,6 @@ $.extend(true, Narmand, {
             var NodeIterator = Range.createNodeIterator();
             while (NodeIterator.hasNext()) {
                 var CurrentNode = NodeIterator.next();
-                console.info(CurrentNode);
                 if (CurrentNode.nodeType === 3 && CurrentNode.parentNode.tagName.toLowerCase() === TagName) {
                     return true;
                 }

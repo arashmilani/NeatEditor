@@ -84,7 +84,8 @@ $.extend(true, Narmand, {
                         .click(function () {
                             try {
                                 Narmand.NeatEditor.Toolbar.ToolSelected($(this));
-                            } catch (e) { console.info(e); }
+                            }
+                            catch (e) { alert(e); }
                             return false;
                         })
                         .appendTo(EditorToolbar);
@@ -102,7 +103,11 @@ $.extend(true, Narmand, {
                 var CalculatedTop = SectionElement.offset().top - 20 -
                     SectionElement.closest(".NarmandNeatEditor").offset().top;
 
-                ToolbarElement.animate({ top: CalculatedTop }, "fast");
+                ToolbarElement.stop().animate({ top: CalculatedTop }, "fast");
+            },
+
+            Hide: function () {
+                $(".NarmandNeatEditor .Toolbar").hide();
             },
 
             ToolSelected: function (ToolElement) {
@@ -126,19 +131,24 @@ $.extend(true, Narmand, {
                 .appendTo(SectionToolsWrapper);
 
                 var Handle = $("<div>").addClass("Handle").text("::").appendTo(SectionToolsWrapper);
+
                 var Content = $("<div>").addClass("Content");
                 return $("<div>").addClass("Section")
                     .data("SectionProviderName", SectionProviderName)
                     .append(SectionToolsWrapper)
-                    .append(Content).click(function () {
+                    .append(Content)
+                    .mousedown(function () {
                         Narmand.NeatEditor.Toolbar.CreateToolbarForSection($(this));
-                    });
+                    })
             },
 
             MakeSectionsSortable: function () {
                 $(".Sections").sortable({
                     handle: '.ToolsWrapper .Handle',
-                    forcePlaceholderSize: true
+                    forcePlaceholderSize: true,
+                    over: function () {
+                        Narmand.NeatEditor.Toolbar.Hide();
+                    }
                 });
             }
         },
