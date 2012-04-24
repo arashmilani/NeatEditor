@@ -199,7 +199,7 @@ Narmand.NeatEditor.Extend({
             var SectionsWrapper = EditorWrapper.find(".Sections");
             var ParagraphSection = Narmand.NeatEditor.SectionProvidersHelper.CreateSectionElement("Paragraph");
             ParagraphSection.addClass("Paragraph");
-            var EditableSection = $("<p>").text(Section.html()).attr("contentEditable", true)
+            var EditableSection = $("<p>").html(Section.html()).attr("contentEditable", true)
                 .appendTo(ParagraphSection.find(".Content"));
             ParagraphSection.appendTo(SectionsWrapper);
         },
@@ -210,12 +210,11 @@ Narmand.NeatEditor.Extend({
             MakeStrong: {
                 Title: "Make selection strong",
                 Act: function () {
-                    //document.execCommand('removeFormat', false, null);
                     var Selection = rangy.getSelection();
                     Range = Selection.getAllRanges()[0];
 
-                    if ($(Range.commonAncestorContainer.parentNode).css("font-weight") > 400 ||
-                        $(Range.commonAncestorContainer.parentNode).css("font-weight") === "bold") {
+
+                    if (this.IsRangeAlreadyStrong(Range)) {
                         return;
                     }
                     else {
@@ -226,26 +225,47 @@ Narmand.NeatEditor.Extend({
                         }
                     }
 
-                    if ($(Range.endContainer.parentNode).css("font-weight") > 400 ||
-                            $(Range.endContainer.parentNode).css("font-weight") === "bold") {
+                    if (this.IsRangeEndContainerStrong(Range)) {
                         var SelectedTextInStartContainer = Range.startContainer.data.substr(Range.startOffset);
                         Range.startContainer.data = Range.startContainer.data.substr(0, Range.startOffset);
                         $(Range.endContainer.parentNode).text(SelectedTextInStartContainer +
                                 $(Range.endContainer.parentNode).text());
                     }
 
-                    if ($(Range.startContainer.parentNode).css("font-weight") > 400 ||
-                            $(Range.startContainer.parentNode).css("font-weight") === "bold") {
+                    if (this.IsRangeStartContainerStrong(Range)) {
                         var SelectedTextInEndContainer = Range.endContainer.data.substr(0, Range.endOffset);
                         Range.endContainer.data = Range.endContainer.data.substr(Range.endOffset);
                         $(Range.startContainer.parentNode).text($(Range.startContainer.parentNode).text() +
                                 SelectedTextInEndContainer);
                     }
 
+                },
 
+                IsRangeAlreadyStrong: function (Range) {
+                    if (Range.startContainer != Range.endContainer) {
+                        return false;
+                    }
 
+                    if (Range.startContainer.parentNode.tagName.toLowerCase() === "strong") {
+                        return true;
+                    }
+                    return false;
+                },
 
+                IsRangeEndContainerStrong: function (Range) {
+                    if (Range.endContainer.parentNode.tagName.toLowerCase() === "strong") {
+                        return true;
+                    }
+                    return false;
+                },
+
+                IsRangeStartContainerStrong: function (Range) {
+                    if (Range.startContainer.parentNode.tagName.toLowerCase() === "strong") {
+                        return true;
+                    }
+                    return false;
                 }
+
             },
             Emphasize: {
                 Title: "Emphasize on selection",
