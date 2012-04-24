@@ -1,4 +1,8 @@
-var Narmand = {
+if (typeof Narmand === "undefined") {
+    Narmand = {};
+}
+
+$.extend(true, Narmand, {
     NeatEditor: {
         Init: function (Options) {
             $.extend(true, this.Options, Options);
@@ -80,7 +84,7 @@ var Narmand = {
                         .click(function () {
                             try {
                                 Narmand.NeatEditor.Toolbar.ToolSelected($(this));
-                            } catch (e) { alert(e); }
+                            } catch (e) { console.info(e); }
                             return false;
                         })
                         .appendTo(EditorToolbar);
@@ -114,12 +118,12 @@ var Narmand = {
             CreateSectionElement: function (SectionProviderName) {
                 var SectionToolsWrapper = $("<div>").addClass("ToolsWrapper");
 
-                var CloseButton = $("<div>").addClass("CloseButton").text("x")
-                    .click(function () {
-                        $(this).closest(".Section").remove();
-                        return false;
-                    })
-                    .appendTo(SectionToolsWrapper);
+                $("<div>").addClass("CloseButton").text("x")
+                .click(function () {
+                    $(this).closest(".Section").remove();
+                    return false;
+                })
+                .appendTo(SectionToolsWrapper);
 
                 var Handle = $("<div>").addClass("Handle").text("::").appendTo(SectionToolsWrapper);
                 var Content = $("<div>").addClass("Content");
@@ -146,7 +150,7 @@ var Narmand = {
         GetSectionProviderByTagName: function (TagName) {
             TagName = TagName.toLowerCase();
             for (var ProviderName in this.SectionProviders) {
-                var Provider = this.SectionProviders[ProviderName]
+                var Provider = this.SectionProviders[ProviderName];
                 if (Provider.TagName === TagName) {
                     return Provider;
                 }
@@ -155,7 +159,8 @@ var Narmand = {
         }
 
     }
-}
+});
+
 
 Narmand.NeatEditor.Extend({
     HtmlCode: {
@@ -211,61 +216,10 @@ Narmand.NeatEditor.Extend({
                 Title: "Make selection strong",
                 Act: function () {
                     var Selection = rangy.getSelection();
-                    Range = Selection.getAllRanges()[0];
-
-
-                    if (this.IsRangeAlreadyStrong(Range)) {
-                        return;
-                    }
-                    else {
-                        var Strong = document.createElement("strong");
-                        if (Range.canSurroundContents()) {
-                            Range.surroundContents(Strong);
-                            return;
-                        }
-                    }
-
-                    if (this.IsRangeEndContainerStrong(Range)) {
-                        var SelectedTextInStartContainer = Range.startContainer.data.substr(Range.startOffset);
-                        Range.startContainer.data = Range.startContainer.data.substr(0, Range.startOffset);
-                        $(Range.endContainer.parentNode).text(SelectedTextInStartContainer +
-                                $(Range.endContainer.parentNode).text());
-                    }
-
-                    if (this.IsRangeStartContainerStrong(Range)) {
-                        var SelectedTextInEndContainer = Range.endContainer.data.substr(0, Range.endOffset);
-                        Range.endContainer.data = Range.endContainer.data.substr(Range.endOffset);
-                        $(Range.startContainer.parentNode).text($(Range.startContainer.parentNode).text() +
-                                SelectedTextInEndContainer);
-                    }
-
-                },
-
-                IsRangeAlreadyStrong: function (Range) {
-                    if (Range.startContainer != Range.endContainer) {
-                        return false;
-                    }
-
-                    if (Range.startContainer.parentNode.tagName.toLowerCase() === "strong") {
-                        return true;
-                    }
-                    return false;
-                },
-
-                IsRangeEndContainerStrong: function (Range) {
-                    if (Range.endContainer.parentNode.tagName.toLowerCase() === "strong") {
-                        return true;
-                    }
-                    return false;
-                },
-
-                IsRangeStartContainerStrong: function (Range) {
-                    if (Range.startContainer.parentNode.tagName.toLowerCase() === "strong") {
-                        return true;
-                    }
-                    return false;
+                    var Range = Selection.getAllRanges()[0];
+                    Narmand.RangeHelper.ToggleRangeSurroundingByTag(Range, "strong");
+                    Selection.removeAllRanges();
                 }
-
             },
             Emphasize: {
                 Title: "Emphasize on selection",
@@ -289,6 +243,39 @@ $.fn.extend({
     }
 });
 
+function DO() {
+    var Selection = rangy.getSelection();
+    var Range = Selection.getAllRanges()[0];
+
+    var NodeIterator = Range.createNodeIterator();
+    var FoundAnyStrongTags = false;
+    while (NodeIterator.hasNext()) {
+        var CurrentNode = NodeIterator.next();
+
+        if (CurrentNode.tagName === "STRONG") {
+            $(CurrentNode).contents().unwrap();
+            FoundAnyStrongTags = true;
+        }
+
+        IsFirstIteration = false;
+    }
+
+    Range.commonAncestorContainer.normalize();
+
+    if (FoundAnyStrongTags) {
+        return;
+    }
+
+    Selection = rangy.getSelection();
+    Range = Selection.getAllRanges()[0];
+
+    var Strong = document.createElement("strong");
+    if (Range.canSurroundContents()) {
+        Range.surroundContents(Strong);
+        return;
+    }
+
+}
 
 function MakeBold() {
     var Selection = rangy.getSelection();
@@ -318,4 +305,4 @@ function MakeBold() {
     Range.setStart(container, pos);
 
     Selection.addRange(Range);
-};
+}
