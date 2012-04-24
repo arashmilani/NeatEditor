@@ -1,0 +1,7 @@
+﻿.NarmandNeatEditor .Toolbar .MakeStrong{
+    background: url(Images/Paragraph.MakeStrong.png) no-repeat center center;
+}
+
+.NarmandNeatEditor .Toolbar .Emphasize{
+    background: url(Images/Paragraph.Emphasize.png) no-repeat center center;
+}

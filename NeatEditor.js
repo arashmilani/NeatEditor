@@ -28,7 +28,6 @@ var Narmand = {
             this.ParseHtmlToEditor(this.Options.Container.val(), EditorWrapper);
 
             this.Options.Container.after(EditorWrapper);
-            this.Toolbar.CreateProvidersToolbar(EditorWrapper);
             this.SectionProvidersHelper.MakeSectionsSortable();
         },
 
@@ -49,13 +48,21 @@ var Narmand = {
         },
 
         Toolbar: {
-            CreateProvidersToolbar: function (EditorWrapper) {
-                var EditorToolbar = $("<div>").addClass("Toolbar")
-                for (var ProviderName in Narmand.NeatEditor.SectionProviders) {
-                    var Provider = Narmand.NeatEditor.SectionProviders[ProviderName];
-                    this.AppendProviderToolsToEditorToolbar(Provider, EditorToolbar);
+            CreateToolbarForSection: function (SectionElement) {
+                var EditorWrapper = SectionElement.closest(".NarmandNeatEditor");
+                var EditorToolbar = this.CunstructToolbarElementIfNotExists(EditorWrapper);
+                var SectionProviderName = SectionElement.data("SectionProviderName");
+                var Provider = Narmand.NeatEditor.SectionProviders[SectionProviderName];
+                this.AppendProviderToolsToEditorToolbar(Provider, EditorToolbar);
+                this.PositionToolbarAccordingToSection(EditorToolbar, SectionElement);
+            },
+
+            CunstructToolbarElementIfNotExists: function (EditorWrapper) {
+                var EditorToolbar = EditorWrapper.find(".Toolbar:first");
+                if (EditorToolbar.length === 0) {
+                    EditorToolbar = $("<div>").addClass("Toolbar").appendTo(EditorWrapper);
                 }
-                EditorWrapper.append(EditorToolbar);
+                return EditorToolbar.empty();
             },
 
             AppendProviderToolsToEditorToolbar: function (Provider, EditorToolbar) {
@@ -64,10 +71,11 @@ var Narmand = {
                 }
 
                 for (var ProviderToolName in Provider.Tools) {
-                    $("<div>").addClass("Tool").addClass(ProviderToolName)
+                    $("<div>").addClass("Tool")
+                        .addClass(ProviderToolName)
                         .data("ToolName", ProviderToolName)
                         .data("SectionProvider", Provider)
-                        .text(ProviderToolName)
+                        .attr("title", Provider.Tools[ProviderToolName].Title)
                         .click(function () {
                             Narmand.NeatEditor.Toolbar.ToolSelected($(this));
                         })
@@ -75,17 +83,24 @@ var Narmand = {
                 }
             },
 
+            PositionToolbarAccordingToSection: function (ToolbarElement, SectionElement) {
+                var CalculatedTop = SectionElement.offset().top - 20 -
+                    SectionElement.closest(".NarmandNeatEditor").offset().top;
+
+                ToolbarElement.animate({ top: CalculatedTop }, "fast");
+            },
+
             ToolSelected: function (ToolElement) {
                 var ToolName = ToolElement.data("ToolName");
-                var SectionProvider = ToolElement.data("SectionProvider")
-                SectionProvider.Tools[ToolName]();
+                var SectionProvider = ToolElement.data("SectionProvider");
+                SectionProvider.Tools[ToolName].Act();
             }
         },
 
         SectionProviders: {},
 
         SectionProvidersHelper: {
-            CreateSectionElement: function () {
+            CreateSectionElement: function (SectionProviderName) {
                 var SectionToolsWrapper = $("<div>").addClass("ToolsWrapper");
 
                 var CloseButton = $("<div>").addClass("CloseButton").text("x")
@@ -97,7 +112,12 @@ var Narmand = {
 
                 var Handle = $("<div>").addClass("Handle").text("::").appendTo(SectionToolsWrapper);
                 var Content = $("<div>").addClass("Content");
-                return $("<div>").addClass("Section").append(SectionToolsWrapper).append(Content);
+                return $("<div>").addClass("Section")
+                    .data("SectionProviderName", SectionProviderName)
+                    .append(SectionToolsWrapper)
+                    .append(Content).click(function () {
+                        Narmand.NeatEditor.Toolbar.CreateToolbarForSection($(this));
+                    });
             },
 
             MakeSectionsSortable: function () {
@@ -141,13 +161,22 @@ Narmand.NeatEditor.Extend({
         AddSectionToEditor: function (Content, EditorWrapper) {
             var SectionsWrapper = EditorWrapper.find(".Sections");
             var HtmlCode = $("<div>").append(Content).html();
-            var HtmlCodeSection = Narmand.NeatEditor.SectionProvidersHelper.CreateSectionElement();
+            var HtmlCodeSection = Narmand.NeatEditor.SectionProvidersHelper.CreateSectionElement("HtmlCode");
             HtmlCodeSection.addClass("HtmlCode");
             var EditableSection = $("<pre>").text(HtmlCode).attr("contentEditable", true)
                         .appendTo(HtmlCodeSection.find(".Content"));
             HtmlCodeSection.appendTo(SectionsWrapper);
         },
         TagName: null,
+
+        Tools: {
+            MakeStrong: {
+                Title: "Make selection strong",
+                Act: function () {
+                    alert("MakeStrong");
+                }
+            }
+        },
 
         EncodeHtml: function (HtmlCode) {
             return HtmlCode.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -173,7 +202,7 @@ Narmand.NeatEditor.Extend({
 
         AddSectionToEditor: function (Section, EditorWrapper) {
             var SectionsWrapper = EditorWrapper.find(".Sections");
-            var ParagraphSection = Narmand.NeatEditor.SectionProvidersHelper.CreateSectionElement();
+            var ParagraphSection = Narmand.NeatEditor.SectionProvidersHelper.CreateSectionElement("Paragraph");
             ParagraphSection.addClass("Paragraph");
             var EditableSection = $("<p>").text(Section.html()).attr("contentEditable", true)
                 .appendTo(ParagraphSection.find(".Content"));
@@ -183,11 +212,17 @@ Narmand.NeatEditor.Extend({
         TagName: "p",
 
         Tools: {
-            MakeStrong: function () {
-                alert("MakeStrong");
+            MakeStrong: {
+                Title: "Make selection strong",
+                Act: function () {
+                    alert("MakeStrong");
+                }
             },
-            Emphasize: function () {
-                alert("Emphasize");
+            Emphasize: {
+                Title: "Emphasize on selection",
+                Act: function () {
+                    alert("MakeEmphasize");
+                }
             }
         }
     }

@@ -1,0 +1,118 @@
+﻿.NarmandNeatEditor {
+    margin-top: 15px;
+    position: relative;
+}
+
+.NarmandNeatEditorRightToLeft {
+    direction: rtl;
+}
+
+.NarmandNeatEditor * {
+    margin: 0;
+    padding: 0;
+}
+
+.NarmandNeatEditor .SectionAdders {
+    font-family: Helvetica;
+    font-size: 12px;
+    margin-top: 15px;
+    overflow: hidden;
+}
+
+.NarmandNeatEditor .SectionAdders .SectionAdder {
+    cursor: pointer;
+    margin: 0 10px 0 0;
+    border-radius: 5px;
+    background-color: #eaeaea;
+    border: 1px solid #c3c3c3;
+    padding: 5px;
+}
+
+.NarmandNeatEditorRightToLeft .SectionAdders .SectionAdder {
+    margin: 0 0 0 10px;
+}
+
+.NarmandNeatEditor .Sections .Section {
+    overflow: hidden;
+    position: relative;
+    background-color: #fff;
+}
+
+.NarmandNeatEditor .Sections .Section .ToolsWrapper {
+    width: 40px;
+    position: absolute;
+    top: 15px;
+    right: 0px;
+}
+
+
+.NarmandNeatEditor .Sections .Section .Handle, .NarmandNeatEditor .Sections .Section .CloseButton {
+    background-color: #eaeaea;
+    border-radius: 8px;
+    font-family: helvetica;
+    font-size: 9px;
+    height: 16px;
+    line-height: 12px;
+    text-align: center;
+    width: 16px;
+    cursor: n-resize;
+    display: none;
+    float: right;
+    margin-left: 3px;
+}
+
+.NarmandNeatEditor .Sections .Section .Handle:hover {
+    background-color: #9de3eb;
+}
+
+
+.NarmandNeatEditor .Sections .Section .CloseButton {
+    line-height: 13px;
+    cursor: pointer;
+}
+
+.NarmandNeatEditor .Sections .Section .CloseButton:hover {
+    background-color: #ff5c36;
+}
+
+
+
+.NarmandNeatEditor .Sections .Section:hover .Handle, .NarmandNeatEditor .Sections .Section:hover .CloseButton {
+    display: block;
+}
+
+.NarmandNeatEditor .Sections .Section .Content {
+    margin: 10px 40px 10px 0px;
+    border: 1px dotted #eaeaea;
+    padding: 5px;
+}
+
+.NarmandNeatEditor .Sections .Section:hover .Content {
+    border: 1px solid #c6c6c6;
+    border-radius: 5px;
+}
+
+.NarmandNeatEditor .Toolbar {
+    position: absolute;
+    left: 20px;
+    top: -15px;
+    background-color: #eaeaea;
+    overflow: hidden;
+    border-radius: 8px;
+    padding:3px 0 3px 5px;
+}
+
+.NarmandNeatEditor .Toolbar .Tool {
+    width: 24px;
+    height: 24px;
+    margin-right: 5px;
+    overflow: hidden;
+    float: left;
+    border-radius: 8px;
+    cursor: pointer;
+    padding:2px;
+}
+
+.NarmandNeatEditor .Toolbar .Tool:hover {
+    background-color:#dcdcdc;
+}
