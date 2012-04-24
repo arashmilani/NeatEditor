@@ -217,6 +217,11 @@ Narmand.NeatEditor.Extend({
                 Act: function () {
                     var Selection = rangy.getSelection();
                     var Range = Selection.getAllRanges()[0];
+
+                    if (!Narmand.NeatEditor.SectionProviders.Paragraph._CanToolActOnRange(Range)) {
+                        return;
+                    }
+
                     Narmand.RangeHelper.ToggleRangeSurroundingByTag(Range, "strong");
                     Selection.removeAllRanges();
                 }
@@ -226,6 +231,11 @@ Narmand.NeatEditor.Extend({
                 Act: function () {
                     var Selection = rangy.getSelection();
                     var Range = Selection.getAllRanges()[0];
+
+                    if (!Narmand.NeatEditor.SectionProviders.Paragraph._CanToolActOnRange(Range)) {
+                        return;
+                    }
+
                     Narmand.RangeHelper.ToggleRangeSurroundingByTag(Range, "em");
                     Selection.removeAllRanges();
                 }
@@ -235,6 +245,11 @@ Narmand.NeatEditor.Extend({
                 Act: function () {
                     var Selection = rangy.getSelection();
                     var Range = Selection.getAllRanges()[0];
+                    
+                    if (!Narmand.NeatEditor.SectionProviders.Paragraph._CanToolActOnRange(Range)) {
+                        return;
+                    }
+
                     Narmand.RangeHelper.ToggleRangeSurroundingByTag(Range, "del");
                     Selection.removeAllRanges();
                 }
@@ -244,6 +259,11 @@ Narmand.NeatEditor.Extend({
                 Act: function () {
                     var Selection = rangy.getSelection();
                     var Range = Selection.getAllRanges()[0];
+
+                    if (!Narmand.NeatEditor.SectionProviders.Paragraph._CanToolActOnRange(Range)) {
+                        return;
+                    }
+
                     Narmand.RangeHelper.ClearFormattingInRange(Range);
                     Selection.removeAllRanges();
                 }
@@ -253,13 +273,13 @@ Narmand.NeatEditor.Extend({
                 Act: function () {
                     var Selection = rangy.getSelection();
                     var Range = Selection.getAllRanges()[0];
-                    console.info(Range);
-                    var ParentElement = $(Range.startContainer.parentElement);
-                    if (ParentElement.is("p")) {
+                    var ParentElement = $(Range.commonAncestorContainer);
+                    var ParagraphSelector = ".NarmandNeatEditor .Section .Content p";
+                    if (ParentElement.is(ParagraphSelector)) {
                         ParentElement.css("direction", "ltr");
                     }
                     else {
-                        ParentElement.closest("p").css("direction", "rtl");
+                        ParentElement.closest(ParagraphSelector).css("direction", "ltr");
                     }
                 }
             },
@@ -268,16 +288,30 @@ Narmand.NeatEditor.Extend({
                 Act: function () {
                     var Selection = rangy.getSelection();
                     var Range = Selection.getAllRanges()[0];
-                    console.info(Range);
-                    var ParentElement = $(Range.startContainer.parentElement);
-                    if (ParentElement.is("p")) {
+                    var ParentElement = $(Range.commonAncestorContainer);
+                    var ParagraphSelector = ".NarmandNeatEditor .Section .Content p";
+                    if (ParentElement.is(ParagraphSelector)) {
                         ParentElement.css("direction", "rtl");
                     }
                     else {
-                        ParentElement.closest("p").css("direction", "rtl");
+                        ParentElement.closest(ParagraphSelector).css("direction", "rtl");
                     }
                 }
             }
+        },
+
+        _CanToolActOnRange: function (Range) {
+            var ParentElement = $(Range.commonAncestorContainer);
+            var ParagraphSelector = ".NarmandNeatEditor .Section .Content p";
+            if (ParentElement.is(ParagraphSelector)) {
+                return true;
+            }
+
+            if (ParentElement.closest(ParagraphSelector).length > 0) {
+                return true;
+            }
+
+            return false;
         }
     }
 });
