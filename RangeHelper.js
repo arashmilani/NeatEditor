@@ -55,7 +55,7 @@ $.extend(true, Narmand, {
             while (NodeIterator.hasNext()) {
                 var CurrentNode = NodeIterator.next();
 
-                if (CurrentNode.nodeType === 3 && CurrentNode.parentNode.tagName.toLowerCase() != "p") {
+                if (CurrentNode.nodeType === 3 && CurrentNode.parentNode.tagName.toLowerCase() !== "p") {
                     $(CurrentNode).unwrap();
                 }
             }

@@ -115,6 +115,7 @@
     border-radius: 8px;
     cursor: pointer;
     padding:2px;
+    outline:none;
 }
 
 .NarmandNeatEditor .Toolbar .Tool:hover {

@@ -40,7 +40,7 @@ $.extend(true, Narmand, {
             }
 
             $("<div>").addClass("Sections").appendTo(EditorWrapper);
-            var SectionAdders = $("<div>").addClass("SectionAdders").appendTo(EditorWrapper)
+            var SectionAdders = $("<div>").addClass("SectionAdders").appendTo(EditorWrapper);
 
 
             for (var ProviderName in this.SectionProviders) {
@@ -50,7 +50,7 @@ $.extend(true, Narmand, {
 
             SectionAdders.find(".SectionAdder").click(function () {
                 Narmand.NeatEditor.TrySyncingTextareaWithEditor($(this));
-            })
+            });
 
             this.ParseHtmlToEditor(this.Options.Container.val(), EditorWrapper);
 
@@ -59,15 +59,15 @@ $.extend(true, Narmand, {
         },
 
         HasTextareaAssociatedEditorWrapper: function () {
-            if (this.Options.Container.data("NarmandNeatEditorID") != undefined) {
+            if (this.Options.Container.data("NarmandNeatEditorID") !== undefined) {
                 return true;
             }
             return false;
         },
 
         GetAssociatedEditorWrapperOfTextarea: function () {
-            var TextareaNeatEditorID = this.Options.Container.data("NarmandNeatEditorID")
-            if (TextareaNeatEditorID != undefined) {
+            var TextareaNeatEditorID = this.Options.Container.data("NarmandNeatEditorID");
+            if (TextareaNeatEditorID !== undefined) {
                 return $("#NarmandNeatEditor_" + TextareaNeatEditorID);
             }
             else {
@@ -318,7 +318,7 @@ Narmand.NeatEditor.Extend({
                 .attr("contentEditable", true)
                 .appendTo(ParagraphSection.find(".Content"));
 
-            if (Section.attr("dir") != undefined) {
+            if (Section.attr("dir") !== undefined) {
                 EditableSection.attr("dir", Section.attr("dir"));
             }
 
@@ -432,7 +432,7 @@ Narmand.NeatEditor.Extend({
 
         ExportSectionHtml: function (SectionElement) {
             var PTag = SectionElement.find(".Content p");
-            var DirectionAttribute = (PTag.attr("dir") != undefined) ?
+            var DirectionAttribute = (PTag.attr("dir") !== undefined) ?
                 " dir='" + PTag.attr("dir") + "'" : "";
             return "<p" + DirectionAttribute + ">" + PTag.html() + "</p>";
         }
