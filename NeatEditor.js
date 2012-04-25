@@ -92,7 +92,7 @@ $.extend(true, Narmand, {
         },
 
         TrySyncingTextareaWithEditor: function (EditorInsideElement) {
-            var NarmandEditor = $(EditorInsideElement).closest(".NarmandNeatEditor");
+            var NarmandEditor = EditorInsideElement.closest(".NarmandNeatEditor");
             var Options = NarmandEditor.data("Options");
             if (Options.AutoSyncTextareaWithEditor) {
                 this.SyncTextareaWithEditor(NarmandEditor);
@@ -227,10 +227,11 @@ $.extend(true, Narmand, {
             },
 
             ToolSelected: function (ToolElement) {
+                var ToolsWrapperElement = ToolElement.parent();
                 var ToolName = ToolElement.data("ToolName");
                 var SectionProvider = ToolElement.data("SectionProvider");
                 SectionProvider.Tools[ToolName].Act();
-                Narmand.NeatEditor.TrySyncingTextareaWithEditor(ToolElement);
+                Narmand.NeatEditor.TrySyncingTextareaWithEditor(ToolsWrapperElement);
             }
         }
 
