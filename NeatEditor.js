@@ -11,7 +11,8 @@ $.extend(true, Narmand, {
 
         Options: {
             Container: null,
-            Direction: "ltr"
+            Direction: "ltr",
+            AutoSyncTextareaWithEditor: true
         },
 
         ConstructEditorElemets: function () {
@@ -23,12 +24,17 @@ $.extend(true, Narmand, {
             }
 
             $("<div>").addClass("Sections").appendTo(EditorWrapper);
-            var SectionAdders = $("<div>").addClass("SectionAdders").appendTo(EditorWrapper);
+            var SectionAdders = $("<div>").addClass("SectionAdders").appendTo(EditorWrapper)
+
 
             for (var ProviderName in this.SectionProviders) {
                 var Provider = Narmand.NeatEditor.SectionProviders[ProviderName];
                 SectionAdders.append(Provider.CreateAdderButton());
             }
+
+            SectionAdders.find(".SectionAdder").click(function () {
+                Narmand.NeatEditor.TrySyncingTextareaWithEditor($(this));
+            })
 
             this.ParseHtmlToEditor(this.Options.Container.val(), EditorWrapper);
 
@@ -52,11 +58,20 @@ $.extend(true, Narmand, {
             });
         },
 
+        TrySyncingTextareaWithEditor: function (EditorInsideElement) {
+            var NarmandEditor = $(EditorInsideElement).closest(".NarmandNeatEditor");
+            var Options = NarmandEditor.data("Options");
+            if (Options.AutoSyncTextareaWithEditor) {
+                this.SyncTextareaWithEditor(NarmandEditor);
+            }
+        },
+
         SyncTextareaWithEditor: function (EditorWrapper) {
             var HtmlCode = "";
             $(EditorWrapper).find(".Sections .Section").each(function () {
                 var SectionProviderName = $(this).data("SectionProviderName");
-                HtmlCode += Narmand.NeatEditor.SectionProviders[SectionProviderName].ExportSectionHtml($(this));
+                HtmlCode += Narmand.NeatEditor.SectionProviders[SectionProviderName]
+                    .ExportSectionHtml($(this)) + "\r\n";
             });
             EditorWrapper.data("Options").Container.val(HtmlCode);
         },
@@ -83,7 +98,12 @@ $.extend(true, Narmand, {
                     .append(Content)
                     .focusin(function () {
                         Narmand.NeatEditor.Toolbar.CreateToolbarForSection($(this));
-                        Narmand.NeatEditor.SyncTextareaWithEditor($(this).closest(".NarmandNeatEditor"));
+                    }).keyup(function () {
+                        var NarmandEditor = $(this).closest(".NarmandNeatEditor")
+                        var Options = NarmandEditor.data("Options");
+                        if (Options.AutoSyncTextareaWithEditor) {
+                            Narmand.NeatEditor.SyncTextareaWithEditor(NarmandEditor);
+                        }
                     });
             },
 
@@ -93,6 +113,9 @@ $.extend(true, Narmand, {
                     forcePlaceholderSize: true,
                     over: function () {
                         Narmand.NeatEditor.Toolbar.Hide();
+                    },
+                    stop: function (event, ui) {
+                        Narmand.NeatEditor.TrySyncingTextareaWithEditor(ui.item);
                     }
                 });
             }
@@ -176,6 +199,15 @@ $.extend(true, Narmand, {
                 var ToolName = ToolElement.data("ToolName");
                 var SectionProvider = ToolElement.data("SectionProvider");
                 SectionProvider.Tools[ToolName].Act();
+                this.TryAutoSyncTextareaWithEditor(ToolElement);
+            },
+
+            TryAutoSyncTextareaWithEditor: function (ToolElement) {
+                var NarmandEditor = ToolElement.closest(".NarmandNeatEditor");
+                var Options = NarmandEditor.data("Options");
+                if (Options.AutoSyncTextareaWithEditor) {
+                    Narmand.NeatEditor.SyncTextareaWithEditor(NarmandEditor);
+                }
             }
         }
 
@@ -200,15 +232,27 @@ Narmand.NeatEditor.Extend({
             var HtmlCode = $("<div>").append(Content).html();
             var HtmlCodeSection = Narmand.NeatEditor.SectionProvidersHelper.CreateSectionElement("HtmlCode");
             HtmlCodeSection.addClass("HtmlCode");
-            var EditableSection = $("<pre>").text(HtmlCode).attr("contentEditable", true)
-                        .appendTo(HtmlCodeSection.find(".Content"));
+            var EditableSection = $("<textarea>").val(HtmlCode)
+                .css("width", "100%")
+                .appendTo(HtmlCodeSection.find(".Content"));
             HtmlCodeSection.appendTo(SectionsWrapper);
         },
-        
+
         TagName: null,
 
         ExportSectionHtml: function (SectionElement) {
-            return SectionElement.find(".Content > pre").html();
+            var EncodedHtml = SectionElement.find(".Content > textarea").val();
+            return this._HtmlDecode(EncodedHtml);
+        },
+
+        _HtmlDecode: function (HtmlToDecode) {
+            return HtmlToDecode.replace(/&amp;/g, '&').replace(/&lt;/g, '<')
+                .replace(/&gt;/g, '>');
+        },
+
+        _HtmlEncode: function (HtmlToEncode) {
+            return HtmlToEncode.replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
         }
     }
 });
@@ -230,8 +274,14 @@ Narmand.NeatEditor.Extend({
             var SectionsWrapper = EditorWrapper.find(".Sections");
             var ParagraphSection = Narmand.NeatEditor.SectionProvidersHelper.CreateSectionElement("Paragraph");
             ParagraphSection.addClass("Paragraph");
-            var EditableSection = $("<p>").html(Section.html()).attr("contentEditable", true)
+            var EditableSection = $("<p>").html(Section.html())
+                .attr("contentEditable", true)
                 .appendTo(ParagraphSection.find(".Content"));
+
+            if (Section.attr("dir") != undefined) {
+                EditableSection.attr("dir", Section.attr("dir"));
+            }
+
             ParagraphSection.appendTo(SectionsWrapper);
         },
 
@@ -341,7 +391,10 @@ Narmand.NeatEditor.Extend({
         },
 
         ExportSectionHtml: function (SectionElement) {
-            return SectionElement.find(".Content").html();
+            var PTag = SectionElement.find(".Content p");
+            var DirectionAttribute = (PTag.attr("dir") != undefined) ?
+                " dir='" + PTag.attr("dir") + "'" : "";
+            return "<p" + DirectionAttribute + ">" + PTag.html() + "</p>";
         }
     }
 });
