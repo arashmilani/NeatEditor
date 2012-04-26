@@ -89,6 +89,8 @@ $.extend(true, Narmand, {
 
                 SectionProvider.AddSectionToEditor($(this), EditorWrapper);
             });
+
+            this.TrySyncingTextareaWithEditor(EditorWrapper.children(":first"));
         },
 
         TrySyncingTextareaWithEditor: function (EditorInsideElement) {
@@ -311,11 +313,16 @@ Narmand.NeatEditor.Extend({
         },
 
         AddSectionToEditor: function (Section, EditorWrapper) {
+            this.Sanitization.Sanitize(Section);
+
             var SectionsWrapper = EditorWrapper.find(".Sections");
             var ParagraphSection = Narmand.NeatEditor.SectionProvidersHelper.CreateSectionElement("Paragraph");
             ParagraphSection.addClass("Paragraph");
             var EditableSection = $("<p>").html(Section.html())
                 .attr("contentEditable", true)
+                .bind("paste", function () {
+                    Narmand.NeatEditor.SectionProviders.Paragraph.Sanitization.SanitizeWithDelay($(this));
+                })
                 .appendTo(ParagraphSection.find(".Content"));
 
             if (Section.attr("dir") !== undefined) {
@@ -413,6 +420,21 @@ Narmand.NeatEditor.Extend({
                         ParentElement.closest(ParagraphSelector).attr("dir", "rtl");
                     }
                 }
+            }
+        },
+
+        Sanitization: {
+            WhiteList: "strong em del a a[href] a[target] br",
+            Sanitize: function (Element) {
+                Narmand.SanitizationHelper.SanitizeElementContents(Element, this.WhiteList);
+            },
+            SanitizeWithDelay: function (Element) {
+                setTimeout(function () {
+                    var WhiteList = Narmand.NeatEditor.SectionProviders.Paragraph.Sanitization.WhiteList;
+                    Narmand.SanitizationHelper.SanitizeElementContents(Element, WhiteList);
+                    Narmand.NeatEditor.TrySyncingTextareaWithEditor(Element);
+                }, 100);
+
             }
         },
 

@@ -4,17 +4,55 @@ if (typeof Narmand === "undefined") {
 
 $.extend(true, Narmand, {
     SanitizationHelper: {
+        count: 0,
         SanitizeElementContents: function (Element, WhiteList) {
             WhiteList = this.NormalizeWhiteList(WhiteList);
 
-            var Contents = $(Element).contents();
-            for (var i = 0; i < Contents.length; i++) {
-                if (!this.IsElementContentElementNode(Contents[i])) {
-                    continue;
+            while (this.HasElementAnyBlackListedContent(Element, WhiteList)) {
+                var ElementNodes = this.GetElementNodesContentsOfElement(Element);
+                for (var i = 0; i < ElementNodes.length; i++) {
+                    this.SanitizeElementContent(ElementNodes[i], WhiteList);
+                }
+            }
+        },
+
+        HasElementAnyBlackListedContent: function (Element, WhiteList) {
+            var ElementNodes = this.GetElementNodesContentsOfElement(Element);
+            for (var i = 0; i < ElementNodes.length; i++) {
+                ElementNodeTagName = ElementNodes[i].tagName;
+                if (!this.IsTagNameWhiteListed(ElementNodeTagName, WhiteList)) {
+                    return true;
                 }
 
-                this.SanitizeElementContent(Contents[i], WhiteList);
+                if (this.HasTagAnyBlackListedAttribute(ElementNodes[i], WhiteList)) {
+                    return true;
+                }
             }
+            return false;
+        },
+
+        HasTagAnyBlackListedAttribute: function (ElementContent, WhiteList) {
+            ElementContentTagName = ElementContent.tagName;
+            var ElementAttributes = this.GetElementAttributes(ElementContent);
+
+            for (var i = 0; i < ElementAttributes.length; i++) {
+                if (!this.IsTagAttributeWhiteListed(ElementContentTagName, ElementAttributes[i], WhiteList)) {
+                    return true;
+                }
+            }
+
+            return false;
+        },
+
+        GetElementNodesContentsOfElement: function (Element) {
+            var ElementNodes = [];
+            var Contents = $(Element).contents();
+            for (var i = 0; i < Contents.length; i++) {
+                if (Contents[i].nodeType === 1) {
+                    ElementNodes.push(Contents[i]);
+                }
+            }
+            return ElementNodes;
         },
 
         NormalizeWhiteList: function (WhiteList) {
@@ -31,13 +69,6 @@ $.extend(true, Narmand, {
             }
 
             return WhiteList.toLowerCase();
-        },
-
-        IsElementContentElementNode: function (ElementContent) {
-            if (ElementContent.nodeType === 1) {
-                return true;
-            }
-            return false;
         },
 
         SanitizeElementContent: function (ElementContent, WhiteList) {
