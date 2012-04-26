@@ -7,7 +7,7 @@ $.extend(true, Narmand, {
         count: 0,
         SanitizeElementContents: function (Element, WhiteList) {
             WhiteList = this.NormalizeWhiteList(WhiteList);
-
+        
             while (this.HasElementAnyBlackListedContent(Element, WhiteList)) {
                 var ElementNodes = this.GetElementNodesContentsOfElement(Element);
                 for (var i = 0; i < ElementNodes.length; i++) {

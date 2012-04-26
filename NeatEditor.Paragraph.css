@@ -21,3 +21,7 @@
 .NarmandNeatEditor .Toolbar .ChanegeDirectionToRightToLeft {
     background: url(Images/Paragraph.ChanegeDirectionToRightToLeft.png) no-repeat center center;
 }
+
+.NarmandNeatEditor .Toolbar .CreateLink {
+    background: url(Images/Paragraph.CreateLink.png) no-repeat center center;
+}

@@ -11,8 +11,12 @@ $.extend(true, Narmand, {
             }
 
             var TagElement = document.createElement(TagName);
+            this.SurroundRangeByElement(Range, TagElement);
+        },
+
+        SurroundRangeByElement: function (Range, Element) {
             if (Range.canSurroundContents()) {
-                Range.surroundContents(TagElement);
+                Range.surroundContents(Element);
             }
         },
 
@@ -30,6 +34,22 @@ $.extend(true, Narmand, {
                 }
             }
             return false;
+        },
+
+        GetTagElementSurroundingRangeByTagName: function (Range, TagName) {
+            TagName = TagName.toLowerCase();
+            var NodeIterator = Range.createNodeIterator();
+            while (NodeIterator.hasNext()) {
+                var CurrentNode = NodeIterator.next();
+                if (CurrentNode.nodeType === 3 && CurrentNode.parentNode.tagName.toLowerCase() === TagName) {
+                    return CurrentNode;
+                }
+
+                if (CurrentNode.nodeType === 1 && CurrentNode.tagName.toLowerCase() === TagName) {
+                    return CurrentNode;
+                }
+            }
+            return null;
         },
 
         CleanRangeByTag: function (Range, TagName) {
