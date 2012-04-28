@@ -17,7 +17,7 @@ Narmand.NeatEditor.Extend({
             var SectionsWrapper = EditorWrapper.find(".Sections");
             var ParagraphSection = Narmand.NeatEditor.SectionProvidersHelper.CreateSectionElement("Paragraph");
             ParagraphSection.addClass("Paragraph");
-            var EditableSection = $("<p>").html(Section.html())
+            var EditableSection = $("<div>").html(Section.html())
                 .attr("contentEditable", true)
                 .bind("paste", function () {
                     Narmand.NeatEditor.SectionProviders.Paragraph.Sanitization.SanitizeWithDelay($(this));
@@ -133,7 +133,7 @@ Narmand.NeatEditor.Extend({
                         return;
                     }
 
-                    Narmand.RangeHelper.ClearFormattingInRange(Range);
+                    Narmand.NeatEditor.SectionProviders.Paragraph._ClearFormattingInRange(Range);
                     Selection.removeAllRanges();
                 }
             },
@@ -186,7 +186,7 @@ Narmand.NeatEditor.Extend({
 
         _CanToolActOnRange: function (Range) {
             var ParentElement = $(Range.commonAncestorContainer);
-            var ParagraphSelector = ".NarmandNeatEditor .Section .Content p";
+            var ParagraphSelector = ".NarmandNeatEditor .Section .Content > div";
             if (ParentElement.is(ParagraphSelector)) {
                 return true;
             }
@@ -198,11 +198,24 @@ Narmand.NeatEditor.Extend({
             return false;
         },
 
+        _ClearFormattingInRange: function (Range) {
+            var NodeIterator = Range.createNodeIterator();
+            while (NodeIterator.hasNext()) {
+                var CurrentNode = NodeIterator.next();
+
+                if (CurrentNode.nodeType === 3 && CurrentNode.parentNode.tagName.toLowerCase() !== "div") {
+                    $(CurrentNode).unwrap();
+                }
+            }
+
+            Range.commonAncestorContainer.normalize();
+        },
+
         ExportSectionHtml: function (SectionElement) {
-            var PTag = SectionElement.find(".Content p");
-            var DirectionAttribute = (PTag.attr("dir") !== undefined) ?
-                " dir='" + PTag.attr("dir") + "'" : "";
-            return "<p" + DirectionAttribute + ">" + PTag.html() + "</p>";
+            var ParagraphTag = SectionElement.find(".Content > div");
+            var DirectionAttribute = (ParagraphTag.attr("dir") !== undefined) ?
+                " dir='" + ParagraphTag.attr("dir") + "'" : "";
+            return "<p" + DirectionAttribute + ">" + ParagraphTag.html() + "</p>";
         }
     }
 });
