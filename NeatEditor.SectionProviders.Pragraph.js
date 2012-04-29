@@ -143,7 +143,7 @@ Narmand.NeatEditor.Extend({
                     var Selection = rangy.getSelection();
                     var Range = Selection.getAllRanges()[0];
                     var ParentElement = $(Range.commonAncestorContainer);
-                    var ParagraphSelector = ".NarmandNeatEditor .Section .Content p";
+                    var ParagraphSelector = ".NarmandNeatEditor .Section .Content > div";
                     if (ParentElement.is(ParagraphSelector)) {
                         ParentElement.css("direction", "ltr");
                     }
@@ -158,7 +158,7 @@ Narmand.NeatEditor.Extend({
                     var Selection = rangy.getSelection();
                     var Range = Selection.getAllRanges()[0];
                     var ParentElement = $(Range.commonAncestorContainer);
-                    var ParagraphSelector = ".NarmandNeatEditor .Section .Content p";
+                    var ParagraphSelector = ".NarmandNeatEditor .Section .Content > div";
                     if (ParentElement.is(ParagraphSelector)) {
                         ParentElement.css("direction", "rtl");
                     }
