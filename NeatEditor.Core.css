@@ -1,6 +1,9 @@
 ﻿.NarmandNeatEditor {
     margin-top: 15px;
     position: relative;
+    border: 1px solid #a6a6a6;
+    background: url(Images/SectionTagsBg.png) repeat-y #fff;
+    font-family:Helvetica;
 }
 
 .NarmandNeatEditorRightToLeft {
@@ -17,6 +20,7 @@
     font-size: 12px;
     margin-top: 15px;
     overflow: hidden;
+    margin-left:100px;
 }
 
 .NarmandNeatEditor .SectionAdders .SectionAdder {
@@ -33,13 +37,27 @@
 }
 
 .NarmandNeatEditor .Sections .Section {
-    overflow: hidden;
     position: relative;
     background-color: #fff;
+    margin:0 20px 0 100px;
+    border-bottom: 1px dotted #eaeaea;
 }
 
 .NarmandNeatEditor .Sections .Section *{
     outline:none;
+}
+
+.NarmandNeatEditor .Sections .Section div.Tag {
+    position:absolute;
+    top:5px;
+    left:-80px;
+    width:60px;
+    height:20px;
+    line-height:18px;
+    font-size:10px;
+    color:#747474;
+    background:url(Images/SectionTagBg.png) no-repeat right center #cacac8;
+    padding-left:5px;
 }
 
 .NarmandNeatEditor .Sections .Section .ToolsWrapper {
@@ -87,13 +105,13 @@
 
 .NarmandNeatEditor .Sections .Section .Content {
     margin: 10px 40px 10px 0px;
-    border: 1px dotted #eaeaea;
+
     padding: 5px;
 }
 
 .NarmandNeatEditor .Sections .Section:hover .Content {
-    border: 1px solid #c6c6c6;
-    border-radius: 5px;
+ 
+   
 }
 
 .NarmandNeatEditor .Toolbar {

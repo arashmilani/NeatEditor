@@ -25,3 +25,8 @@
 .NarmandNeatEditor .Toolbar .CreateLink {
     background: url(Images/Paragraph.CreateLink.png) no-repeat center center;
 }
+
+.NarmandNeatEditor .Sections .Paragraph div.Tag {
+    color:#fff;
+    background-color:#5b447a;
+}

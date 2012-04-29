@@ -126,13 +126,15 @@ $.extend(true, Narmand, {
                     })
                     .appendTo(SectionToolsWrapper);
 
-                var Handle = $("<div>").addClass("Handle").text("::").appendTo(SectionToolsWrapper);
+                $("<div>").addClass("Handle").text("::").appendTo(SectionToolsWrapper);
 
                 var Content = $("<div>").addClass("Content");
+                var SectionTag = $("<div>").addClass("Tag").text(SectionProviderName);
                 return $("<div>").addClass("Section")
                     .data("SectionProviderName", SectionProviderName)
                     .append(SectionToolsWrapper)
                     .append(Content)
+                    .append(SectionTag)
                     .focusin(function () {
                         Narmand.NeatEditor.Toolbar.CreateToolbarForSection($(this));
                     }).keyup(function () {
@@ -144,12 +146,14 @@ $.extend(true, Narmand, {
                 $(".Sections").sortable({
                     handle: '.ToolsWrapper .Handle',
                     forcePlaceholderSize: true,
+                    containment: 'parent',
                     over: function () {
                         Narmand.NeatEditor.Toolbar.Hide();
                     },
                     stop: function (event, ui) {
                         Narmand.NeatEditor.TrySyncingTextareaWithEditor(ui.item);
-                    }
+                    },
+                    axis: 'y'
                 });
             }
         },
@@ -218,10 +222,10 @@ $.extend(true, Narmand, {
                     ToolbarElement.show();
                 }
 
-                var CalculatedTop = SectionElement.offset().top - 20 -
+                var CalculatedTop = SectionElement.offset().top - 30 -
                     SectionElement.closest(".NarmandNeatEditor").offset().top;
 
-                ToolbarElement.stop().animate({ top: CalculatedTop }, "fast");
+                ToolbarElement.stop().css("left", "120px").animate({ top: CalculatedTop }, "fast");
             },
 
             Hide: function () {
