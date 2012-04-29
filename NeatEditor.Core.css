@@ -40,7 +40,7 @@
     position: relative;
     background-color: #fff;
     margin:0 20px 0 100px;
-    border-bottom: 1px dotted #eaeaea;
+    border-bottom: 1px solid #e2e2e2;
 }
 
 .NarmandNeatEditor .Sections .Section *{
@@ -105,13 +105,11 @@
 
 .NarmandNeatEditor .Sections .Section .Content {
     margin: 10px 40px 10px 0px;
-
     padding: 5px;
 }
 
-.NarmandNeatEditor .Sections .Section:hover .Content {
- 
-   
+.NarmandNeatEditor .Sections .HtmlCode .Content textarea{
+    border:0;
 }
 
 .NarmandNeatEditor .Toolbar {

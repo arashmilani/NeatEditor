@@ -4,3 +4,9 @@
     width:52px;
     left:-72px;
 }
+
+.NarmandNeatEditor .Sections .Heading .Content input{
+    border:0;
+    font-size:20px;
+    font-weight:bold;
+}
