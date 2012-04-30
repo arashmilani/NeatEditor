@@ -91,8 +91,8 @@ $.extend(true, Narmand, {
                 EditorHeight = EditorWrapper.height();
                 EditorWrapper.height(EditorWrapper.height());
 
+                SectionAdders.children().hide();
                 SectionAdders.slideUp("fast", function () {
-                    SectionAdders.children().hide();
                     SectionElement.after(SectionAdders);
                     SectionAdders.slideDown("fast", function () {
                         SectionAdders.children().fadeIn("fast");
