@@ -157,8 +157,8 @@ $.extend(true, Narmand, {
                     .append(Content)
                     .append(SectionTag)
                     .focusin(function () {
-                        Narmand.NeatEditor.Toolbar.CreateToolbarForSection($(this));
                         Narmand.NeatEditor.RelocateSectionAdderBelowSection($(this));
+                        Narmand.NeatEditor.Toolbar.CreateToolbarForSection($(this));
                     }).keyup(function () {
                         Narmand.NeatEditor.TrySyncingTextareaWithEditor($(this));
                     });
@@ -239,15 +239,16 @@ $.extend(true, Narmand, {
             PositionToolbarAccordingToSection: function (ToolbarElement, SectionElement) {
                 if (ToolbarElement.children().length === 0) {
                     ToolbarElement.hide();
+                    return;
                 }
-                else {
-                    ToolbarElement.show();
-                }
+
+                ToolbarElement.hide();
 
                 var CalculatedTop = SectionElement.offset().top - 30 -
                     SectionElement.closest(".NarmandNeatEditor").offset().top;
 
-                ToolbarElement.stop().css("left", "120px").animate({ top: CalculatedTop }, "fast");
+                ToolbarElement.css("left", "120px")
+                    .css("top", CalculatedTop).show();
             },
 
             Hide: function () {
