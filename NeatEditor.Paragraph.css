@@ -34,3 +34,23 @@
 .NarmandNeatEditor .Sections .Paragraph .Content {
     min-height:15px;
 }
+
+.NarmandNeatEditorRightToLeft .Sections .Paragraph .Content {
+    direction:rtl;
+}
+
+.NarmandNeatEditor .Sections .Paragraph .Content strong{
+    font-weight:bold;
+}
+
+.NarmandNeatEditor .Sections .Paragraph .Content em{
+    font-style:oblique;
+}
+
+.NarmandNeatEditor .Sections .Paragraph .Content del{
+    text-decoration:line-through;
+}
+
+.NarmandNeatEditor .Sections .Paragraph .Content a, .NarmandNeatEditor .Sections .Paragraph .Content a:hover{
+    color:#158cca;
+}

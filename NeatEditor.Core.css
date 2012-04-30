@@ -17,6 +17,7 @@
 
 .NarmandNeatEditorRightToLeft {
     direction: rtl;
+    background: url(Images/SectionTagsRtlBg.png) repeat-y right #fff;
 }
 
 .NarmandNeatEditor * {
@@ -32,6 +33,10 @@
     position: relative;
 }
 
+.NarmandNeatEditorRightToLeft .SectionAdders {
+    margin: 15px 100px 15px 20px;
+}
+
 .NarmandNeatEditor .SectionAdders .Tag {
     position: absolute;
     top: 0;
@@ -42,9 +47,17 @@
     font-size: 16px;
     color: #3b3e00;
     background: url(Images/SectionTagBg.png) no-repeat right center #dce800;
-    padding-left: 5px;
+    padding: 0 0 0 5px;
     cursor: default;
 }
+
+.NarmandNeatEditorRightToLeft .SectionAdders .Tag {
+   right: -40px;
+   left:auto;
+   padding:0 5px 0 0;
+   background: url(Images/SectionTagRtlBg.png) no-repeat left center #dce800;
+}
+
 
 .NarmandNeatEditor .SectionAdders .SectionAdder {
     display: inline-block;
@@ -71,6 +84,10 @@
     border-bottom: 1px solid #e2e2e2;
 }
 
+.NarmandNeatEditorRightToLeft .Section {
+   margin: 0 100px 0 20px !important;
+}
+
 .NarmandNeatEditor .Sections .Section * {
     outline: none;
 }
@@ -89,11 +106,24 @@
     cursor: default;
 }
 
+.NarmandNeatEditorRightToLeft .Sections .Section div.Tag {
+   right: -80px;
+   left: auto;
+   padding:0 5px 0 0;
+   background: url(Images/SectionTagRtlBg.png) no-repeat left center #cacac8;
+}
+
+
 .NarmandNeatEditor .Sections .Section .ToolsWrapper {
     width: 40px;
     position: absolute;
     top: 5px;
     right: 0px;
+}
+
+.NarmandNeatEditorRightToLeft .Sections .Section .ToolsWrapper {
+    right: auto;
+    left:0px;    
 }
 
 
@@ -109,7 +139,12 @@
     cursor: n-resize;
     display: none;
     float: right;
-    margin-left: 3px;
+    margin: 0 0 0 3px;
+}
+
+.NarmandNeatEditorRightToLeft .Sections .Section .Handle, .NarmandNeatEditorRightToLeft .Sections .Section .CloseButton {
+    float: left;
+    margin: 0 3px 0 0;
 }
 
 .NarmandNeatEditor .Sections .Section .Handle:hover {
@@ -135,6 +170,11 @@
     padding: 5px;
 }
 
+.NarmandNeatEditorRightToLeft .Sections .Section .Content {
+    margin: 10px 0 10px 40px;
+    direction:rtl;
+}
+
 .NarmandNeatEditor .Sections .HtmlCode .Content textarea {
     border: 0;
     padding:0;
@@ -144,28 +184,40 @@
     color:Gray;
     resize: vertical;
     height: 90px;
+    direction:ltr;
 }
 
 .NarmandNeatEditor .Toolbar {
     position: absolute;
     left: 20px;
-    top: -15px;
+    top: -35px;
     background-color: #eaeaea;
     overflow: hidden;
     border-radius: 8px;
     padding: 3px 0 3px 5px;
 }
 
+.NarmandNeatEditorRightToLeft .Toolbar {
+    left:auto;
+    right: 20px;
+    padding: 3px 5px 3px 0;
+}
+
 .NarmandNeatEditor .Toolbar .Tool {
     width: 24px;
     height: 24px;
-    margin-right: 5px;
+    margin: 0 5px 0 0;
     overflow: hidden;
     float: left;
     border-radius: 8px;
     cursor: pointer;
     padding: 2px;
     outline: none;
+}
+
+.NarmandNeatEditorRightToLeft .Toolbar .Tool {
+    float: right;
+    margin: 0 0 0 5px;
 }
 
 .NarmandNeatEditor .Toolbar .Tool:hover {

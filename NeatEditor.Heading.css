@@ -6,6 +6,11 @@
     left:-72px;
 }
 
+.NarmandNeatEditorRightToLeft .Sections .Heading div.Tag {
+    right:-72px;
+    left:auto;
+}
+
 .NarmandNeatEditor .Sections .Heading .Content input{
     border:0;
     font-size:20px;

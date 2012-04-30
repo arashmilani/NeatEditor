@@ -85,12 +85,18 @@ $.extend(true, Narmand, {
 
         RelocateSectionAdderBelowSection: function (SectionElement) {
             if (!SectionElement.next().is(".SectionAdders")) {
-                var SectionAdders = SectionElement.closest(".NarmandNeatEditor").find(".SectionAdders");
+                var EditorWrapper = SectionElement.closest(".NarmandNeatEditor")
+                var SectionAdders = EditorWrapper.find(".SectionAdders");
+
+                EditorHeight = EditorWrapper.height();
+                EditorWrapper.height(EditorWrapper.height());
+
                 SectionAdders.slideUp("fast", function () {
                     SectionAdders.children().hide();
                     SectionElement.after(SectionAdders);
                     SectionAdders.slideDown("fast", function () {
                         SectionAdders.children().fadeIn("fast");
+                        EditorWrapper.css("height", "auto");
                     });
                 });
             }
@@ -156,7 +162,11 @@ $.extend(true, Narmand, {
                     .append(SectionToolsWrapper)
                     .append(Content)
                     .append(SectionTag)
-                    .focusin(function () {
+                    .focusin(function (Event) {
+                        if ($(Event.target).is("a.Tool")) {
+                            return false;
+                        }
+
                         Narmand.NeatEditor.RelocateSectionAdderBelowSection($(this));
                         Narmand.NeatEditor.Toolbar.CreateToolbarForSection($(this));
                     }).keyup(function () {
@@ -225,7 +235,7 @@ $.extend(true, Narmand, {
                         .data("SectionProvider", Provider)
                         .attr("title", Provider.Tools[ProviderToolName].Title)
                         .attr("href", "")
-                        .click(function () {
+                        .click(function (Event) {
                             try {
                                 Narmand.NeatEditor.Toolbar.ToolSelected($(this));
                             }
@@ -241,14 +251,8 @@ $.extend(true, Narmand, {
                     ToolbarElement.hide();
                     return;
                 }
-
-                ToolbarElement.hide();
-
-                var CalculatedTop = SectionElement.offset().top - 30 -
-                    SectionElement.closest(".NarmandNeatEditor").offset().top;
-
-                ToolbarElement.css("left", "120px")
-                    .css("top", CalculatedTop).show();
+                SectionElement.append(ToolbarElement);
+                ToolbarElement.show();
             },
 
             Hide: function () {
@@ -333,10 +337,10 @@ Narmand.NeatEditor.Extend({
 
 $.fn.extend({
     NeatEditor: function (Options) {
+        if (Options === undefined) {
+            var Options = {};
+        }
         return this.each(function () {
-            if (Options === undefined) {
-                var Options = {};
-            }
             Options.Container = $(this);
             Narmand.NeatEditor.Init(Options);
         });

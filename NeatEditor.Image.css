@@ -4,3 +4,8 @@
     width:40px;
     left:-60px;
 }
+
+.NarmandNeatEditorRightToLeft .Sections .Image div.Tag {
+    right:-60px;
+    left:auto;
+}
