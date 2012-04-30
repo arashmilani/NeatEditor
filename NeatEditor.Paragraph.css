@@ -30,3 +30,7 @@
     color:#fff;
     background-color:#5b447a;
 }
+
+.NarmandNeatEditor .Sections .Paragraph .Content {
+    min-height:15px;
+}

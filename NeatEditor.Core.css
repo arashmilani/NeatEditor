@@ -4,6 +4,7 @@
     border: 1px solid #a6a6a6;
     background: url(Images/SectionTagsBg.png) repeat-y #fff;
     font-family: Helvetica;
+    direction: ltr;
 }
 
 .NarmandNeatEditorRightToLeft {

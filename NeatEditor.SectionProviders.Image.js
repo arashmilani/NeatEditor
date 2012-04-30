@@ -27,8 +27,8 @@ Narmand.NeatEditor.Extend({
                 }
             });
 
-            ConfigSection.find("input[name=Url]").val(ImageUrl);
-            ConfigSection.find("input[name=Description]").val(ImageAlternativeText);
+            ConfigSection.find("input.Url").val(ImageUrl);
+            ConfigSection.find("input.Description").val(ImageAlternativeText);
 
             ConfigSection.appendTo(ImageSection.find(".Content"));
 
@@ -38,18 +38,18 @@ Narmand.NeatEditor.Extend({
         TagName: "img",
 
         ExportSectionHtml: function (SectionElement) {
-            var ImageUrl = SectionElement.find("input[name=Url]").val();
+            var ImageUrl = SectionElement.find("input.Url").val();
             ImageUrl = this._HtmlEncode(ImageUrl);
 
-            var AlternativeText = SectionElement.find("input[name=Description]").val();
+            var AlternativeText = SectionElement.find("input.Description").val();
             AlternativeText = (AlternativeText === "") ? '' : ' alt="' + AlternativeText + '" ';
             AlternativeText = jQuery.trim(this._HtmlEncode(AlternativeText));
 
             return '<img src="' + ImageUrl + '"' + AlternativeText + '/>';
         },
 
-        _SectionTemplate: "<label>Url:</label><input type='text' name='Url'/><br/>" +
-            "<label>Description:</label><input type='text' name='Description' />",
+        _SectionTemplate: "<label>Url:</label><input type='text' class='Url'/><br/>" +
+            "<label>Description:</label><input type='text' class='Description' />",
 
         _HtmlEncode: function (HtmlToEncode) {
             return HtmlToEncode.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
