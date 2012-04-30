@@ -16,20 +16,35 @@
 }
 
 .NarmandNeatEditor .SectionAdders {
-    font-family: Helvetica;
-    font-size: 12px;
-    margin-top: 15px;
-    overflow: hidden;
-    margin-left:100px;
+    font-size: 10px;
+    margin: 15px 20px 15px 100px;
+    border-bottom: 1px solid #E2E2E2;
+    padding-bottom:15px;
+    position:relative;
+}
+
+.NarmandNeatEditor .SectionAdders .Tag {
+    position:absolute;
+    top:0;
+    left:-40px;
+    width:20px;
+    height:20px;
+    line-height:18px;
+    font-size:16px;
+    color:#3b3e00;
+    background:url(Images/SectionTagBg.png) no-repeat right center #dce800;
+    padding-left:5px;
+    cursor:default;
 }
 
 .NarmandNeatEditor .SectionAdders .SectionAdder {
+    display: inline-block;
     cursor: pointer;
     margin: 0 10px 0 0;
     border-radius: 5px;
-    background-color: #eaeaea;
-    border: 1px solid #c3c3c3;
-    padding: 5px;
+    background-color: #fff;
+    border: 1px dashed #cacac8;
+    padding: 2px 4px 3px 4px;
 }
 
 .NarmandNeatEditorRightToLeft .SectionAdders .SectionAdder {
@@ -58,12 +73,13 @@
     color:#747474;
     background:url(Images/SectionTagBg.png) no-repeat right center #cacac8;
     padding-left:5px;
+    cursor:default;
 }
 
 .NarmandNeatEditor .Sections .Section .ToolsWrapper {
     width: 40px;
     position: absolute;
-    top: 15px;
+    top: 5px;
     right: 0px;
 }
 

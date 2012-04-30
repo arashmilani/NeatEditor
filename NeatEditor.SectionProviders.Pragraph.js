@@ -1,14 +1,13 @@
 Narmand.NeatEditor.Extend({
     Paragraph: {
-        CreateAdderButton: function () {
-            var AdderButton = $("<a>").addClass("SectionAdder Paragraph").text("Add Paragraph");
-            AdderButton.click(function () {
+        CreateAdderButton: function (AdderButtonBase) {
+            AdderButtonBase.click(function () {
                 var EditorWrapper = $(this).closest(".NarmandNeatEditor");
                 Narmand.NeatEditor.SectionProviders.Paragraph.AddSectionToEditor(
                     $("<p>Replace this with you text</p>"), EditorWrapper);
                 return false;
-            });
-            return AdderButton;
+            }).text("+ Paragraph");
+            return AdderButtonBase;
         },
 
         AddSectionToEditor: function (Section, EditorWrapper) {
@@ -28,7 +27,7 @@ Narmand.NeatEditor.Extend({
                 EditableSection.attr("dir", Section.attr("dir"));
             }
 
-            ParagraphSection.appendTo(SectionsWrapper);
+            EditorWrapper.find(".SectionAdders").before(ParagraphSection);
         },
 
         TagName: "p",

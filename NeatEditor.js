@@ -39,13 +39,15 @@ $.extend(true, Narmand, {
                 EditorWrapper.removeClass("NarmandNeatEditorRightToLeft");
             }
 
-            $("<div>").addClass("Sections").appendTo(EditorWrapper);
+            var Sections = $("<div>").addClass("Sections").appendTo(EditorWrapper);
             var SectionAdders = $("<div>").addClass("SectionAdders").appendTo(EditorWrapper);
-
+            $("<div>").addClass("Tag").text("+").appendTo(SectionAdders);
+            Sections.append(SectionAdders);
 
             for (var ProviderName in this.SectionProviders) {
                 var Provider = Narmand.NeatEditor.SectionProviders[ProviderName];
-                SectionAdders.append(Provider.CreateAdderButton());
+                var AdderButtonBase = this.CreateAdderButtonBase(ProviderName);
+                SectionAdders.append(Provider.CreateAdderButton(AdderButtonBase));
             }
 
             SectionAdders.find(".SectionAdder").click(function () {
@@ -71,7 +73,26 @@ $.extend(true, Narmand, {
                 return $("#NarmandNeatEditor_" + TextareaNeatEditorID);
             }
             else {
-                throw "there is no editor associated with this textarea";
+                throw "There is no editor associated with this textarea";
+            }
+        },
+
+        CreateAdderButtonBase: function (SectionProviderName) {
+            var AdderButtonBase = $("<a>").addClass("SectionAdder")
+                .addClass(SectionProviderName).text("+ " + SectionProviderName);
+            return AdderButtonBase;
+        },
+
+        RelocateSectionAdderBelowSection: function (SectionElement) {
+            if (!SectionElement.next().is(".SectionAdders")) {
+                var SectionAdders = SectionElement.closest(".NarmandNeatEditor").find(".SectionAdders");
+                SectionAdders.slideUp("fast", function () {
+                    SectionAdders.children().hide();
+                    SectionElement.after(SectionAdders);
+                    SectionAdders.slideDown("fast", function () {
+                        SectionAdders.children().fadeIn("fast");
+                    });
+                });
             }
         },
 
@@ -137,6 +158,7 @@ $.extend(true, Narmand, {
                     .append(SectionTag)
                     .focusin(function () {
                         Narmand.NeatEditor.Toolbar.CreateToolbarForSection($(this));
+                        Narmand.NeatEditor.RelocateSectionAdderBelowSection($(this));
                     }).keyup(function () {
                         Narmand.NeatEditor.TrySyncingTextareaWithEditor($(this));
                     });
@@ -247,15 +269,14 @@ $.extend(true, Narmand, {
 
 Narmand.NeatEditor.Extend({
     HtmlCode: {
-        CreateAdderButton: function () {
-            var AdderButton = $("<a>").addClass("SectionAdder HtmlCode").text("Add HTML");
-            AdderButton.click(function () {
+        CreateAdderButton: function (AdderButtonBase) {
+            AdderButtonBase.click(function () {
                 var EditorWrapper = $(this).closest(".NarmandNeatEditor");
                 Narmand.NeatEditor.SectionProviders.HtmlCode.AddSectionToEditor(
                             $("<code>replace with your html code</code>"), EditorWrapper);
                 return false;
-            });
-            return AdderButton;
+            }).text("+ HTML Code");
+            return AdderButtonBase;
         },
         AddSectionToEditor: function (Content, EditorWrapper) {
             var SectionsWrapper = EditorWrapper.find(".Sections");
@@ -273,11 +294,17 @@ Narmand.NeatEditor.Extend({
             var EditableSection = $("<textarea>").val(HtmlCode)
                 .css("width", "100%")
                 .appendTo(HtmlCodeSection.find(".Content"));
-            HtmlCodeSection.appendTo(SectionsWrapper);
+
+            EditorWrapper.find(".SectionAdders").before(HtmlCodeSection);
         },
 
         _IsLastSectionHtmlCode: function (SectionsWrapper) {
-            var SectionProviderName = SectionsWrapper.find(".Section:last").data("SectionProviderName");
+            var SectionBeforeSectionAddersElement = SectionsWrapper.find(".SectionAdders").prev();
+            if (SectionBeforeSectionAddersElement.length === 0) {
+                return false;
+            }
+
+            var SectionProviderName = SectionBeforeSectionAddersElement.data("SectionProviderName");
             if (SectionProviderName === "HtmlCode") {
                 return true;
             }

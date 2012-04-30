@@ -1,14 +1,14 @@
 Narmand.NeatEditor.Extend({
     Heading: {
-        CreateAdderButton: function () {
-            var AdderButton = $("<a>").addClass("SectionAdder Heading").text("Add Heading");
-            AdderButton.click(function () {
+        CreateAdderButton: function (AdderButtonBase) {
+            AdderButtonBase.click(function () {
                 var EditorWrapper = $(this).closest(".NarmandNeatEditor");
                 Narmand.NeatEditor.SectionProviders.Heading.AddSectionToEditor(
                             $("<span>Replace with your heading</span>"), EditorWrapper);
                 return false;
-            });
-            return AdderButton;
+            })
+            .text("+ Heading");
+            return AdderButtonBase;
         },
         AddSectionToEditor: function (Content, EditorWrapper) {
             var SectionsWrapper = EditorWrapper.find(".Sections");
@@ -24,7 +24,8 @@ Narmand.NeatEditor.Extend({
                 })
                 .css("width", "100%")
                 .appendTo(HeadingSection.find(".Content"));
-            HeadingSection.appendTo(SectionsWrapper);
+
+            EditorWrapper.find(".SectionAdders").before(HeadingSection);
         },
 
         TagName: "h2",

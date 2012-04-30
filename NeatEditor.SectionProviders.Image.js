@@ -1,14 +1,13 @@
 Narmand.NeatEditor.Extend({
     Image: {
-        CreateAdderButton: function () {
-            var AdderButton = $("<a>").addClass("SectionAdder Image").text("Add Image");
-            AdderButton.click(function () {
+        CreateAdderButton: function (AdderButtonBase) {
+            AdderButtonBase.click(function () {
                 var EditorWrapper = $(this).closest(".NarmandNeatEditor");
                 Narmand.NeatEditor.SectionProviders.Image.AddSectionToEditor(
                             $("<img src='' alt=''/>"), EditorWrapper);
                 return false;
-            });
-            return AdderButton;
+            }).text("+ Image");
+            return AdderButtonBase;
         },
         AddSectionToEditor: function (Content, EditorWrapper) {
             var SectionsWrapper = EditorWrapper.find(".Sections");
@@ -32,7 +31,8 @@ Narmand.NeatEditor.Extend({
             ConfigSection.find("input[name=Description]").val(ImageAlternativeText);
 
             ConfigSection.appendTo(ImageSection.find(".Content"));
-            ImageSection.appendTo(SectionsWrapper);
+
+            EditorWrapper.find(".SectionAdders").before(ImageSection);
         },
 
         TagName: "img",
@@ -48,8 +48,8 @@ Narmand.NeatEditor.Extend({
             return '<img src="' + ImageUrl + '"' + AlternativeText + '/>';
         },
 
-        _SectionTemplate: "<label>Image Url:</label><input type='text' name='Url'/><br/>" +
-            "<label>Image Description:</label><input type='text' name='Description' />",
+        _SectionTemplate: "<label>Url:</label><input type='text' name='Url'/><br/>" +
+            "<label>Description:</label><input type='text' name='Description' />",
 
         _HtmlEncode: function (HtmlToEncode) {
             return HtmlToEncode.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
