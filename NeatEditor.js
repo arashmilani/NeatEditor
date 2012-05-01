@@ -103,19 +103,21 @@ $.extend(true, Narmand, {
         },
 
         ParseHtmlToEditor: function (HtmlCode, EditorWrapper) {
-            var RootElements = $("<div>").html(HtmlCode).children();
-            RootElements.each(function () {
-                var TagName = this.nodeName;
-                var SectionProvider = Narmand.NeatEditor.SectionProviders.HtmlCode;
+            var RootElementsWrapper = $("<div>").html(HtmlCode);
 
-                try {
-                    SectionProvider = Narmand.NeatEditor.GetSectionProviderByTagName(TagName);
-                }
-                catch (e) {
+            while (RootElementsWrapper.children()[0] != undefined) {
+                var NextRootElement = RootElementsWrapper.children()[0];
+                var TagName = NextRootElement.nodeName;
+
+                var SectionProvider = Narmand.NeatEditor.GetSectionProviderByTagName(TagName);
+
+                if (typeof SectionProvider.ExtractAnyDefinedTagsFromSection !== "undefined") {
+                    SectionProvider.ExtractAnyDefinedTagsFromSection($(NextRootElement));
                 }
 
-                SectionProvider.AddSectionToEditor($(this), EditorWrapper);
-            });
+                SectionProvider.AddSectionToEditor($(NextRootElement), EditorWrapper);
+                $(NextRootElement).remove();
+            }
 
             this.TrySyncingTextareaWithEditor(EditorWrapper.children(":first"));
         },
@@ -202,7 +204,7 @@ $.extend(true, Narmand, {
                     return Provider;
                 }
             }
-            throw "There is no section provider controlling [" + TagName + "] tag";
+            return Narmand.NeatEditor.SectionProviders.HtmlCode
         },
 
         Toolbar: {

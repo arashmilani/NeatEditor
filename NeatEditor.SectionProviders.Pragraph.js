@@ -10,6 +10,10 @@ Narmand.NeatEditor.Extend({
             return AdderButtonBase;
         },
 
+        ExtractAnyDefinedTagsFromSection: function (RootElement) {
+            RootElement.find("img").insertBefore(RootElement);
+        },
+
         AddSectionToEditor: function (Section, EditorWrapper) {
             this.Sanitization.Sanitize(Section);
 
