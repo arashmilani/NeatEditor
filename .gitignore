@@ -1,0 +1,8 @@
+.settings
+.project
+.buildpath
+*~
+Pack.pm
+ParseMaster.pm
+jsPacker.pl
+
