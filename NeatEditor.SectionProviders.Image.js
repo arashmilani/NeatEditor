@@ -45,7 +45,7 @@ Narmand.NeatEditor.Extend({
             AlternativeText = (AlternativeText === "") ? '' : ' alt="' + AlternativeText + '" ';
             AlternativeText = jQuery.trim(this._HtmlEncode(AlternativeText));
 
-            return '<img src="' + ImageUrl + '"' + AlternativeText + '/>';
+            return '<img src="' + ImageUrl + '" ' + AlternativeText + '/>';
         },
 
         _SectionTemplate: "<label>Url:</label><input type='text' class='Url'/><br/>" +
