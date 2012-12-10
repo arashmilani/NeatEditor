@@ -155,8 +155,6 @@ $.extend(true, Narmand, {
                     })
                     .appendTo(SectionToolsWrapper);
 
-                $("<div>").addClass("Handle").text("::").appendTo(SectionToolsWrapper);
-
                 var Content = $("<div>").addClass("Content");
                 var SectionTag = $("<div>").addClass("Tag").text(SectionProviderName);
                 return $("<div>").addClass("Section")
@@ -178,9 +176,10 @@ $.extend(true, Narmand, {
 
             MakeSectionsSortable: function () {
                 $(".Sections").sortable({
-                    handle: '.ToolsWrapper .Handle',
+                    handle: '.Tag',
+                    forceHelperSize: true,
                     forcePlaceholderSize: true,
-                    containment: 'parent',
+                    containment: $(".Sections").parent(),
                     over: function () {
                         Narmand.NeatEditor.Toolbar.Hide();
                     },

@@ -12,7 +12,7 @@
     font-family: Helvetica !important;
     font-style: normal;
     font-size: 100%;
-    outline:none;
+    outline: none;
 }
 
 .NarmandNeatEditorRightToLeft {
@@ -27,20 +27,21 @@
 
 .NarmandNeatEditor .SectionAdders {
     font-size: 10px;
-    margin: 15px 20px 15px 100px;
+    margin: 15px 0 15px 85px;
     border-bottom: 1px solid #E2E2E2;
-    padding-bottom: 15px;
+    padding: 0 0 15px 20px;
     position: relative;
 }
 
 .NarmandNeatEditorRightToLeft .SectionAdders {
-    margin: 15px 100px 15px 20px;
+    margin: 15px 85px 15px 0;
+    padding: 0 20px 15px 0;
 }
 
 .NarmandNeatEditor .SectionAdders .Tag {
     position: absolute;
-    top: 0;
-    left: -40px;
+    top: 1px;
+    left: -25px;
     width: 20px;
     height: 20px;
     line-height: 18px;
@@ -48,14 +49,14 @@
     color: #3b3e00;
     background: url(Images/SectionTagBg.png) no-repeat right center #dce800;
     padding: 0 0 0 5px;
-    cursor: default;
+    cursor: n-resize;
 }
 
 .NarmandNeatEditorRightToLeft .SectionAdders .Tag {
-   right: -40px;
-   left:auto;
-   padding:0 5px 0 0;
-   background: url(Images/SectionTagRtlBg.png) no-repeat left center #dce800;
+    right: -25px;
+    left: auto;
+    padding: 0 5px 0 0;
+    background: url(Images/SectionTagRtlBg.png) no-repeat left center #dce800;
 }
 
 
@@ -67,10 +68,10 @@
     background-color: #fff;
     border: 1px dashed #cacac8;
     padding: 0 4px;
-    font-size:11px;
-    color:#6c6f70;
-    height:20px;
-    line-height:20px;
+    font-size: 11px;
+    color: #6c6f70;
+    height: 20px;
+    line-height: 20px;
 }
 
 .NarmandNeatEditorRightToLeft .SectionAdders .SectionAdder {
@@ -79,13 +80,12 @@
 
 .NarmandNeatEditor .Sections .Section {
     position: relative;
-    background-color: #fff;
-    margin: 0 20px 0 100px;
-    border-bottom: 1px solid #e2e2e2;
+    padding-left: 85px;
 }
 
 .NarmandNeatEditorRightToLeft .Section {
-   margin: 0 100px 0 20px !important;
+    padding-right: 85px;
+    padding-left: 0 !important;
 }
 
 .NarmandNeatEditor .Sections .Section * {
@@ -94,8 +94,8 @@
 
 .NarmandNeatEditor .Sections .Section div.Tag {
     position: absolute;
-    top: 5px;
-    left: -80px;
+    top: 15px;
+    left: 20px;
     width: 60px;
     height: 20px;
     line-height: 18px;
@@ -103,94 +103,86 @@
     color: #747474;
     background: url(Images/SectionTagBg.png) no-repeat right center #cacac8;
     padding-left: 5px;
-    cursor: default;
+    cursor: n-resize;
 }
 
 .NarmandNeatEditorRightToLeft .Sections .Section div.Tag {
-   right: -80px;
-   left: auto;
-   padding:0 5px 0 0;
-   background: url(Images/SectionTagRtlBg.png) no-repeat left center #cacac8;
+    right: 20px;
+    left: auto;
+    padding: 0 5px 0 0;
+    background: url(Images/SectionTagRtlBg.png) no-repeat left center #cacac8;
 }
 
 
 .NarmandNeatEditor .Sections .Section .ToolsWrapper {
-    width: 40px;
+    width: 20px;
     position: absolute;
-    top: 5px;
-    right: 0px;
+    right: 7px;
+    top: 8px;
 }
 
 .NarmandNeatEditorRightToLeft .Sections .Section .ToolsWrapper {
     right: auto;
-    left:0px;    
+    left: 7px;
 }
 
 
-.NarmandNeatEditor .Sections .Section .Handle, .NarmandNeatEditor .Sections .Section .CloseButton {
+.NarmandNeatEditor .Sections .Section .CloseButton {
     background-color: #eaeaea;
     border-radius: 8px;
     font-family: helvetica;
     font-size: 9px;
     height: 16px;
-    line-height: 12px;
+    line-height: 13px;
+    cursor: pointer;
     text-align: center;
     width: 16px;
-    cursor: n-resize;
+    
     display: none;
     float: right;
     margin: 0 0 0 3px;
 }
 
-.NarmandNeatEditorRightToLeft .Sections .Section .Handle, .NarmandNeatEditorRightToLeft .Sections .Section .CloseButton {
+.NarmandNeatEditorRightToLeft .Sections .Section .CloseButton {
     float: left;
     margin: 0 3px 0 0;
-}
-
-.NarmandNeatEditor .Sections .Section .Handle:hover {
-    background-color: #9de3eb;
-}
-
-
-.NarmandNeatEditor .Sections .Section .CloseButton {
-    line-height: 13px;
-    cursor: pointer;
 }
 
 .NarmandNeatEditor .Sections .Section .CloseButton:hover {
     background-color: #ff5c36;
 }
 
-.NarmandNeatEditor .Sections .Section:hover .Handle, .NarmandNeatEditor .Sections .Section:hover .CloseButton {
+.NarmandNeatEditor .Sections .Section:hover .CloseButton {
     display: block;
 }
 
 .NarmandNeatEditor .Sections .Section .Content {
-    margin: 10px 40px 10px 0px;
-    padding: 5px;
+    border-bottom: 1px solid #e2e2e2;
+    padding: 15px 10px 15px 20px;
+    background-color: #fff;
 }
 
 .NarmandNeatEditorRightToLeft .Sections .Section .Content {
-    margin: 10px 0 10px 40px;
-    direction:rtl;
+    padding: 15px 20px 15px 20px;
+    direction: rtl;
 }
 
 .NarmandNeatEditor .Sections .HtmlCode .Content textarea {
     border: 0;
-    padding:0;
-    outline:0;
-    font-family:Courier !important;
-    font-size:14px;
-    color:Gray;
+    padding: 0;
+    outline: 0;
+    font-family: Courier !important;
+    font-size: 14px;
+    color: Gray;
     resize: vertical;
     height: 90px;
-    direction:ltr;
+    direction: ltr;
 }
 
 .NarmandNeatEditor .Toolbar {
     position: absolute;
-    left: 20px;
-    top: -35px;
+    left: 100px;
+    top: -25px;
     background-color: #eaeaea;
     overflow: hidden;
     border-radius: 8px;
@@ -198,8 +190,8 @@
 }
 
 .NarmandNeatEditorRightToLeft .Toolbar {
-    left:auto;
-    right: 20px;
+    left: auto;
+    right: 100px;
     padding: 3px 5px 3px 0;
 }
 
