@@ -79,7 +79,8 @@
             "<label>Url:</label><input type='text' name='Url' class='Url'/>" +
             " — OR — " +
             "<form class='ImageUplaodForm' action='#' method='post' enctype='multipart/form-data'>" +
-                "<input type='file' name='NeatEditorImageFile' />" +
+                "<input type='file' name='NeatEditorImageFile' class='FileInput' />" +
+                "<input class='FakeFileInput' type='submit' value='Upload' />" +
             "</form>" +
             "<br/>" +
             "<label>Description:</label><input type='text' class='Description' />",

@@ -1,15 +1,41 @@
 ﻿.NarmandNeatEditor .Sections .Image div.Tag {
-    color:#fff;
-    background-color:#bd295a;
-    width:40px;
-    left:40px;
+    color: #fff;
+    background-color: #bd295a;
+    width: 40px;
+    left: 40px;
 }
 
 .NarmandNeatEditorRightToLeft .Sections .Image div.Tag {
-    right:40px;
-    left:auto;
+    right: 40px;
+    left: auto;
 }
 
 .Sections .Image form.ImageUplaodForm {
     display: inline-block;
+    position: relative;
+    width: 100px;
+    overflow: hidden;
+     height:30px;
+     vertical-align: middle;
+}
+
+.Sections .Image form.ImageUplaodForm .FileInput {
+    position: relative;
+    text-align: right !important;
+    -moz-opacity: 0;
+    filter: alpha(opacity: 0);
+    opacity: 0;
+    z-index: 2;
+    cursor: pointer;
+    width: 100px;
+}
+
+.Sections .Image form.ImageUplaodForm .FakeFileInput {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+    cursor: pointer;
+    width: 100px;
+   
 }
