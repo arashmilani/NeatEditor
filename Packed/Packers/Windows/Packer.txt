@@ -1,3 +1,0 @@
-Packer -o Packed/NeatEditor.Packed.js -m jsmin RangeHelper.js SanitizationHelper.js NeatEditor.js NeatEditor.SectionProviders.Pragraph.js NeatEditor.SectionProviders.Heading.js NeatEditor.SectionProviders.Image.js 
-
-Packer -o Packed/NeatEditor.Packed.css -m cssmin NeatEditor.Core.css NeatEditor.Paragraph.css NeatEditor.Image.css NeatEditor.Heading.css

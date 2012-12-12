@@ -1,4 +1,4 @@
-Narmand.NeatEditor.Extend({
+﻿Narmand.NeatEditor.Extend({
     Image: {
         CreateAdderButton: function (AdderButtonBase) {
             AdderButtonBase.click(function () {
@@ -15,17 +15,11 @@ Narmand.NeatEditor.Extend({
             var ImageUrl = ImageElement.find("img").attr("src");
             var ImageAlternativeText = ImageElement.find("img").attr("alt");
 
-
-
             var ImageSection = Narmand.NeatEditor.SectionProvidersHelper.CreateSectionElement("Image");
             ImageSection.addClass("Image");
             var ConfigSection = $("<div>").html(this._SectionTemplate);
 
-            ConfigSection.find("input").keydown(function (Event) {
-                if (Event.which === 13) {
-                    return false;
-                }
-            });
+            this.InitConfigSectionBindings(ConfigSection);
 
             ConfigSection.find("input.Url").val(ImageUrl);
             ConfigSection.find("input.Description").val(ImageAlternativeText);
@@ -33,6 +27,38 @@ Narmand.NeatEditor.Extend({
             ConfigSection.appendTo(ImageSection.find(".Content"));
 
             EditorWrapper.find(".SectionAdders").before(ImageSection);
+        },
+
+        InitConfigSectionBindings: function (ConfigSectionElement) {
+            ConfigSectionElement.find("input").keydown(function (Event) {
+                if (Event.which === 13) {
+                    return false;
+                }
+            });
+
+            ConfigSectionElement.find("form input[name=NeatEditorImageFile]").change(function () {
+                if ($(this).val() === "") {
+                    return;
+                }
+
+                var Form = $(this).closest("form");
+                Form.ajaxSubmit({
+                    type: "POST",
+                    dataType: "text",
+                    url: "Uploaders/Default.aspx",
+                    success: function (result, statusText, xhr, $form) {
+                        Form.closest(".Content").find("img.Preview").attr("src", result).end()
+                                .find("input[name=Url]").val(result).end()
+                                .find("input[name=NeatEditorImageFile]").val("");
+                        Narmand.NeatEditor.TrySyncingTextareaWithEditor(Form);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                    },
+                    complete: function () {
+
+                    }
+                });
+            });
         },
 
         TagName: "img",
@@ -48,7 +74,14 @@ Narmand.NeatEditor.Extend({
             return '<img src="' + ImageUrl + '" ' + AlternativeText + '/>';
         },
 
-        _SectionTemplate: "<label>Url:</label><input type='text' class='Url'/><br/>" +
+        _SectionTemplate:
+            "<img class='Preview' src='' alt='' width='40' height='40' />" +
+            "<label>Url:</label><input type='text' name='Url' class='Url'/>" +
+            " — OR — " +
+            "<form class='ImageUplaodForm' action='#' method='post' enctype='multipart/form-data'>" +
+                "<input type='file' name='NeatEditorImageFile' />" +
+            "</form>" +
+            "<br/>" +
             "<label>Description:</label><input type='text' class='Description' />",
 
         _HtmlEncode: function (HtmlToEncode) {

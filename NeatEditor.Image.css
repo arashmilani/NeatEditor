@@ -9,3 +9,7 @@
     right:40px;
     left:auto;
 }
+
+.Sections .Image form.ImageUplaodForm {
+    display: inline-block;
+}
