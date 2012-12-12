@@ -167,18 +167,6 @@
     direction: rtl;
 }
 
-.NarmandNeatEditor .Sections .HtmlCode .Content textarea {
-    border: 0;
-    padding: 0;
-    outline: 0;
-    font-family: Courier !important;
-    font-size: 14px;
-    color: Gray;
-    resize: vertical;
-    height: 90px;
-    direction: ltr;
-}
-
 .NarmandNeatEditor .Toolbar {
     position: absolute;
     left: 100px;
