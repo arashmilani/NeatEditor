@@ -1,21 +1,21 @@
 Narmand.NeatEditor.Extend({
-    Heading: {
+    Heading1: {
         CreateAdderButton: function (AdderButtonBase) {
             AdderButtonBase.click(function () {
                 var EditorWrapper = $(this).closest(".NarmandNeatEditor");
-                Narmand.NeatEditor.SectionProviders.Heading.AddSectionToEditor(
-                            $("<span>Replace with your heading</span>"), EditorWrapper);
+                Narmand.NeatEditor.SectionProviders.Heading1.AddSectionToEditor(
+                            $("<span>Replace with your heading 1</span>"), EditorWrapper);
                 return false;
             })
-            .text("+ Heading");
+            .text("+ Heading 1");
             return AdderButtonBase;
         },
         AddSectionToEditor: function (Content, EditorWrapper) {
             var SectionsWrapper = EditorWrapper.find(".Sections");
             var HeadingText = $("<div>").append(Content).text();
 
-            var HeadingSection = Narmand.NeatEditor.SectionProvidersHelper.CreateSectionElement("Heading");
-            HeadingSection.addClass("Heading");
+            var HeadingSection = Narmand.NeatEditor.SectionProvidersHelper.CreateSectionElement("Heading1");
+            HeadingSection.addClass("Heading1");
             var EditableSection = $("<input type='text'>").val(HeadingText)
                 .keydown(function (Event) {
                     if (Event.which === 13) {
@@ -28,11 +28,11 @@ Narmand.NeatEditor.Extend({
             EditorWrapper.find(".SectionAdders").before(HeadingSection);
         },
 
-        TagName: "h2",
+        TagName: "h1",
 
         ExportSectionHtml: function (SectionElement) {
             var EncodedHeadingValue = this._HtmlEncode(SectionElement.find(".Content > input").val());
-            return "<h2>" + EncodedHeadingValue + "</h2>";
+            return "<h1>" + EncodedHeadingValue + "</h1>";
         },
 
         _HtmlEncode: function (HtmlToEncode) {

@@ -1,4 +1,6 @@
 ﻿@import url("NeatEditor.Core.css");
 @import url("NeatEditor.Paragraph.css");
 @import url("NeatEditor.Image.css");
-@import url("NeatEditor.Heading.css");
+@import url("NeatEditor.Heading1.css");
+@import url("NeatEditor.Heading2.css");
+@import url("NeatEditor.Heading3.css");

@@ -1,0 +1,22 @@
+﻿.NarmandNeatEditor .Sections .Heading2 div.Tag {
+    color: #fff;
+    background-color: #25afa0;
+    width: 57px;
+    top: 19px;
+    left: 23px;
+}
+
+.NarmandNeatEditorRightToLeft .Sections .Heading2 div.Tag {
+    right: 23px;
+    left: auto;
+}
+
+.NarmandNeatEditor .Sections .Heading2 .Content input {
+    border: 0;
+    font-size: 17px;
+    font-weight: bold;
+    height: auto;
+    outline: none;
+    padding: 0;
+    color: #202020;
+}
