@@ -15,8 +15,8 @@
     position: relative;
     width: 100px;
     overflow: hidden;
-     height:30px;
-     vertical-align: middle;
+    height: 30px;
+    vertical-align: middle;
 }
 
 .Sections .Image form.ImageUplaodForm .FileInput {
@@ -37,5 +37,4 @@
     z-index: 1;
     cursor: pointer;
     width: 100px;
-   
 }

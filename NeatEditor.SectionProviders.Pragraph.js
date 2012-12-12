@@ -25,6 +25,22 @@ Narmand.NeatEditor.Extend({
                 .bind("paste", function () {
                     Narmand.NeatEditor.SectionProviders.Paragraph.Sanitization.SanitizeWithDelay($(this));
                 })
+                .bind("keypress", function (Event) {
+                    if (Event.keyCode === 13) {
+                        var sel = rangy.getSelection();
+                        if (sel.rangeCount > 0) {
+                            var range = sel.getRangeAt(0);
+                            range.deleteContents();
+                            var frag = range.createContextualFragment("<br/>");
+                            var lastChild = frag.lastChild;
+                            range.insertNode(frag);
+                            range.collapseAfter(lastChild);
+                            sel.setSingleRange(range);
+                        }
+                        Narmand.NeatEditor.TrySyncingTextareaWithEditor($(this));
+                        return false;
+                    }
+                })
                 .appendTo(ParagraphSection.find(".Content"));
 
             if (Section.attr("dir") !== undefined) {
@@ -218,7 +234,11 @@ Narmand.NeatEditor.Extend({
             var ParagraphTag = SectionElement.find(".Content > div");
             var DirectionAttribute = (ParagraphTag.attr("dir") !== undefined) ?
                 " dir='" + ParagraphTag.attr("dir") + "'" : "";
-            return "<p" + DirectionAttribute + ">" + ParagraphTag.html() + "</p>";
+
+            ParagraphTagHtml = "<p" + DirectionAttribute + ">" +
+                    ParagraphTag.html().replace(/<br>/gi, "<br/>") + 
+                    "</p>";
+            return ParagraphTagHtml;
         }
     }
 });

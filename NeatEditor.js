@@ -137,6 +137,7 @@ $.extend(true, Narmand, {
                 HtmlCode += Narmand.NeatEditor.SectionProviders[SectionProviderName]
                     .ExportSectionHtml($(this)) + "\r\n";
             });
+            HtmlCode = HtmlCode.replace(/<\/?[A-Z]+.*?>/g, function (m) { return m.toLowerCase(); });
             EditorWrapper.data("Options").Container.val(HtmlCode);
         },
 
