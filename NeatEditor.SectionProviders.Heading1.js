@@ -4,7 +4,7 @@ Narmand.NeatEditor.Extend({
             AdderButtonBase.click(function () {
                 var EditorWrapper = $(this).closest(".NarmandNeatEditor");
                 Narmand.NeatEditor.SectionProviders.Heading1.AddSectionToEditor(
-                            $("<span>Replace with your heading 1</span>"), EditorWrapper);
+                            $("<span>Put your heading 1 here</span>"), EditorWrapper);
                 return false;
             })
             .text("+ Heading 1");
